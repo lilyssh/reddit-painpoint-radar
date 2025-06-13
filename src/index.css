@@ -3,53 +3,58 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
+/* Linear风格设计系统 */
 
 @layer base {
   :root {
-    --background: 220 13% 6%;
-    --foreground: 220 10% 92%;
+    /* 基础色彩 - 更深的背景和更细腻的层次 */
+    --background: 210 11% 3%;
+    --foreground: 210 40% 98%;
 
-    --card: 220 13% 9%;
-    --card-foreground: 220 10% 92%;
+    --card: 210 11% 4%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 220 13% 9%;
-    --popover-foreground: 220 10% 92%;
+    --popover: 210 11% 4%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 284 100% 60%;
-    --primary-foreground: 220 13% 6%;
+    /* Linear风格的紫色主色调 */
+    --primary: 258 90% 66%;
+    --primary-foreground: 210 11% 3%;
 
-    --secondary: 220 13% 15%;
-    --secondary-foreground: 220 10% 92%;
+    --secondary: 210 11% 8%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 220 13% 15%;
-    --muted-foreground: 220 10% 65%;
+    --muted: 210 11% 6%;
+    --muted-foreground: 210 11% 40%;
 
-    --accent: 194 100% 50%;
-    --accent-foreground: 220 13% 6%;
+    /* 蓝色强调色 */
+    --accent: 206 100% 70%;
+    --accent-foreground: 210 11% 3%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 220 13% 20%;
-    --input: 220 13% 15%;
-    --ring: 284 100% 60%;
+    --border: 210 11% 12%;
+    --input: 210 11% 8%;
+    --ring: 258 90% 66%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    --sidebar-background: 220 13% 8%;
-    --sidebar-foreground: 220 10% 92%;
-    --sidebar-primary: 284 100% 60%;
-    --sidebar-primary-foreground: 220 13% 6%;
-    --sidebar-accent: 220 13% 15%;
-    --sidebar-accent-foreground: 220 10% 92%;
-    --sidebar-border: 220 13% 20%;
-    --sidebar-ring: 284 100% 60%;
+    /* Linear风格渐变 */
+    --gradient-primary: linear-gradient(135deg, 
+      hsl(258, 90%, 66%) 0%, 
+      hsl(206, 100%, 70%) 100%);
+    
+    --gradient-subtle: linear-gradient(135deg, 
+      hsl(210, 11%, 6%) 0%, 
+      hsl(210, 11%, 4%) 100%);
+    
+    --gradient-glow: linear-gradient(135deg, 
+      hsla(258, 90%, 66%, 0.2) 0%, 
+      hsla(206, 100%, 70%, 0.1) 100%);
 
-    /* Custom gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(284, 100%, 60%) 0%, hsl(194, 100%, 50%) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(220, 13%, 15%) 0%, hsl(220, 13%, 9%) 100%);
-    --gradient-bg: radial-gradient(ellipse at top, hsl(284, 100%, 60%, 0.1) 0%, transparent 70%);
+    /* 噪点纹理 */
+    --noise: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSBiYXNlRnJlcXVlbmN5PSIwLjkiIG51bU9jdGF2ZXM9IjQiIHNlZWQ9IjIiLz48ZmVDb2xvck1hdHJpeCB2YWx1ZXM9IjAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAuMDIgMCIvPjwvZmlsdGVyPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIiBvcGFjaXR5PSIwLjQiLz48L3N2Zz4=");
   }
 }
 
@@ -60,76 +65,170 @@
 
   body {
     @apply bg-background text-foreground;
-    background-image: var(--gradient-bg);
+    background-image: var(--noise), 
+                      radial-gradient(ellipse at top left, hsla(258, 90%, 66%, 0.03) 0%, transparent 60%),
+                      radial-gradient(ellipse at bottom right, hsla(206, 100%, 70%, 0.02) 0%, transparent 60%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-feature-settings: 'cv11', 'ss01';
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
   }
 }
 
 @layer utilities {
-  .gradient-primary {
-    background: var(--gradient-primary);
+  /* Linear风格组件样式 */
+  .linear-card {
+    @apply bg-card border border-border/50 backdrop-blur-sm;
+    background: linear-gradient(135deg, 
+      hsla(210, 11%, 6%, 0.8) 0%, 
+      hsla(210, 11%, 4%, 0.9) 100%);
+    box-shadow: 
+      inset 0 1px 0 hsla(210, 40%, 98%, 0.05),
+      0 1px 3px hsla(210, 11%, 0%, 0.2),
+      0 4px 12px hsla(210, 11%, 0%, 0.15);
   }
-  
-  .gradient-secondary {
-    background: var(--gradient-secondary);
+
+  .linear-glow {
+    box-shadow: 
+      0 0 20px hsla(258, 90%, 66%, 0.15),
+      0 0 40px hsla(258, 90%, 66%, 0.1),
+      inset 0 1px 0 hsla(210, 40%, 98%, 0.05);
   }
-  
+
+  .linear-border {
+    @apply border border-transparent;
+    background: linear-gradient(var(--gradient-subtle)) padding-box,
+                linear-gradient(135deg, 
+                  hsla(258, 90%, 66%, 0.3) 0%, 
+                  hsla(206, 100%, 70%, 0.3) 100%) border-box;
+  }
+
   .text-gradient {
     background: var(--gradient-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  
-  .glow {
-    box-shadow: 0 0 20px hsl(284, 100%, 60%, 0.3);
-  }
-  
-  .glow-accent {
-    box-shadow: 0 0 20px hsl(194, 100%, 50%, 0.3);
+
+  .aurora-bg {
+    background: 
+      radial-gradient(ellipse 80% 50% at 50% -20%, hsla(258, 90%, 66%, 0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 120% 50%, hsla(206, 100%, 70%, 0.1) 0%, transparent 60%),
+      var(--gradient-subtle);
   }
 }
 
-/* Custom animations */
-@keyframes pulse-glow {
+/* Linear风格动画 */
+@keyframes aurora {
   0%, 100% {
-    box-shadow: 0 0 20px hsl(284, 100%, 60%, 0.3);
+    transform: translateX(-50%) translateY(-50%) rotate(0deg);
+    opacity: 0.3;
   }
   50% {
-    box-shadow: 0 0 30px hsl(284, 100%, 60%, 0.6);
+    transform: translateX(-50%) translateY(-50%) rotate(180deg);
+    opacity: 0.6;
   }
 }
 
-@keyframes float {
+@keyframes float-gentle {
   0%, 100% {
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-4px);
   }
 }
 
-@keyframes data-flow {
+@keyframes shimmer {
   0% {
-    transform: translateX(-100%) skewX(-15deg);
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
+    transform: translateX(-100%);
   }
   100% {
-    transform: translateX(100%) skewX(-15deg);
-    opacity: 0;
+    transform: translateX(100%);
   }
 }
 
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
+  }
 }
 
-.animate-float {
-  animation: float 3s ease-in-out infinite;
+.animate-aurora {
+  animation: aurora 20s ease-in-out infinite;
 }
 
-.animate-data-flow {
-  animation: data-flow 3s linear infinite;
+.animate-float-gentle {
+  animation: float-gentle 6s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 3s ease-in-out infinite;
+}
+
+/* 流光效果 */
+.shimmer-overlay {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-overlay::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    hsla(210, 40%, 98%, 0.03) 50%, 
+    transparent 100%);
+  transition: left 0.6s ease;
+}
+
+.shimmer-overlay:hover::before {
+  left: 100%;
+}
+
+/* 微妙的悬停效果 */
+.linear-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.linear-hover:hover {
+  transform: translateY(-1px);
+  box-shadow: 
+    0 0 25px hsla(258, 90%, 66%, 0.2),
+    0 8px 25px hsla(210, 11%, 0%, 0.3),
+    inset 0 1px 0 hsla(210, 40%, 98%, 0.08);
+}
+
+/* 按钮样式 */
+.linear-button {
+  @apply relative overflow-hidden;
+  background: var(--gradient-primary);
+  border: 1px solid hsla(258, 90%, 66%, 0.3);
+  box-shadow: 
+    0 1px 3px hsla(210, 11%, 0%, 0.2),
+    inset 0 1px 0 hsla(210, 40%, 98%, 0.1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.linear-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 
+    0 4px 12px hsla(210, 11%, 0%, 0.3),
+    0 2px 8px hsla(258, 90%, 66%, 0.3),
+    inset 0 1px 0 hsla(210, 40%, 98%, 0.15);
+}
+
+.linear-button:active {
+  transform: translateY(0px);
 }

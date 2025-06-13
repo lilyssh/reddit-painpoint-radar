@@ -1,7 +1,6 @@
 
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import HeroSection from "@/components/HeroSection";
 import PainPointCard from "@/components/PainPointCard";
@@ -59,25 +58,38 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <div onClick={scrollToPainPoints}>
+      <div onClick={scrollToPainPoints} className="cursor-pointer">
         <HeroSection />
       </div>
 
       {/* Pain Points Section */}
-      <section id="pain-points" className="py-20 px-6">
-        <div className="max-w-6xl mx-auto">
+      <section id="pain-points" className="py-24 px-6 relative">
+        {/* 背景装饰 */}
+        <div className="absolute inset-0 opacity-50">
+          <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-primary/10 rounded-full blur-3xl animate-pulse-subtle" />
+          <div className="absolute bottom-1/4 right-1/3 w-24 h-24 bg-accent/10 rounded-full blur-2xl animate-pulse-subtle" style={{ animationDelay: '2s' }} />
+        </div>
+        
+        <div className="max-w-6xl mx-auto relative">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">
-              今日 <span className="text-gradient">热门痛点</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border border-border/50 bg-card/50 backdrop-blur-sm text-muted-foreground mb-6">
+              今日精选
+            </div>
+            <h2 className="text-3xl md:text-4xl font-light mb-4 tracking-tight">
+              热门 <span className="text-gradient font-medium">痛点洞察</span>
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              基于Reddit社区真实讨论，AI智能筛选的高价值商业机会
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
+              基于 Reddit 社区真实讨论，AI 智能筛选的高价值商业机会
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
             {painPointsData.map((painPoint, index) => (
-              <div key={index} className="animate-fade-in" style={{ animationDelay: `${index * 0.2}s` }}>
+              <div 
+                key={index} 
+                className="animate-fade-in" 
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
                 <PainPointCard
                   {...painPoint}
                   onViewDetails={() => handleViewDetails(index)}
@@ -88,27 +100,29 @@ const Index = () => {
 
           {/* CTA Section */}
           <div className="text-center">
-            <h3 className="text-2xl font-bold mb-4">
-              想要获得完整的痛点分析？
-            </h3>
-            <p className="text-muted-foreground mb-8">
-              订阅我们的每日报告，获取详细的解决方案和验证工具
-            </p>
-            <EmailCapture />
+            <div className="max-w-lg mx-auto">
+              <h3 className="text-xl font-medium mb-4 text-foreground">
+                想要获得完整的痛点分析？
+              </h3>
+              <p className="text-muted-foreground mb-8 font-light leading-relaxed">
+                订阅我们的每日报告，获取详细的解决方案和验证工具
+              </p>
+              <EmailCapture />
+            </div>
           </div>
         </div>
       </section>
 
       {/* Subscribe Dialog */}
       <Dialog open={showSubscribeDialog} onOpenChange={setShowSubscribeDialog}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="linear-card max-w-md border-border/50">
           <DialogHeader>
-            <DialogTitle className="text-center">
-              🔒 Premium 内容
+            <DialogTitle className="text-center text-foreground font-medium">
+              Premium 内容
             </DialogTitle>
           </DialogHeader>
           <div className="text-center py-6">
-            <p className="text-muted-foreground mb-6">
+            <p className="text-muted-foreground mb-6 font-light">
               这是高价值痛点，需要订阅才能查看完整分析
             </p>
             <EmailCapture />
@@ -117,14 +131,19 @@ const Index = () => {
       </Dialog>
 
       {/* Footer */}
-      <footer className="border-t border-border/50 py-8 px-6">
+      <footer className="border-t border-border/30 py-12 px-6">
         <div className="max-w-6xl mx-auto text-center">
-          <p className="text-muted-foreground text-sm">
+          <p className="text-muted-foreground text-sm font-light">
             © 2024 RedditPainPoint Radar. All rights reserved.
           </p>
-          <p className="text-muted-foreground text-xs mt-2">
-            <a href="#" className="hover:text-foreground transition-colors">DMCA报告</a>
-          </p>
+          <div className="mt-4">
+            <a 
+              href="#" 
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors font-light"
+            >
+              DMCA报告
+            </a>
+          </div>
         </div>
       </footer>
     </div>
