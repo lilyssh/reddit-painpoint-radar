@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,34 +8,34 @@
 @layer base {
   :root {
     /* 基础色彩 - 深邃蓝色背景和更细腻的层次 */
-    --background: 220 25% 8%;
+    --background: 220 15% 12%;
     --foreground: 210 40% 98%;
 
-    --card: 220 20% 10%;
+    --card: 220 12% 16%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 220 20% 10%;
+    --popover: 220 12% 16%;
     --popover-foreground: 210 40% 98%;
 
     /* Linear风格的紫色主色调 */
     --primary: 258 90% 66%;
-    --primary-foreground: 220 25% 8%;
+    --primary-foreground: 220 15% 12%;
 
-    --secondary: 220 15% 12%;
+    --secondary: 220 10% 18%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 220 20% 9%;
-    --muted-foreground: 220 15% 45%;
+    --muted: 220 12% 14%;
+    --muted-foreground: 220 15% 55%;
 
     /* 蓝色强调色 */
     --accent: 206 100% 70%;
-    --accent-foreground: 220 25% 8%;
+    --accent-foreground: 220 15% 12%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 220 15% 15%;
-    --input: 220 20% 12%;
+    --border: 220 15% 22%;
+    --input: 220 12% 18%;
     --ring: 258 90% 66%;
 
     --radius: 0.5rem;
@@ -45,23 +46,23 @@
       hsl(206, 100%, 70%) 100%);
     
     --gradient-subtle: linear-gradient(135deg, 
-      hsl(220, 25%, 10%) 0%, 
-      hsl(220, 20%, 8%) 100%);
+      hsl(220, 15%, 16%) 0%, 
+      hsl(220, 12%, 14%) 100%);
     
     --gradient-glow: linear-gradient(135deg, 
       hsla(258, 90%, 66%, 0.2) 0%, 
       hsla(206, 100%, 70%, 0.1) 100%);
 
-    /* 深邃蓝色背景渐变 */
+    /* 深邃蓝色背景渐变 - 更亮的版本 */
     --gradient-background: linear-gradient(135deg,
-      hsl(220, 30%, 5%) 0%,
-      hsl(230, 25%, 8%) 25%,
-      hsl(240, 20%, 10%) 50%,
-      hsl(220, 25%, 8%) 75%,
-      hsl(210, 30%, 6%) 100%);
+      hsl(220, 20%, 10%) 0%,
+      hsl(230, 18%, 12%) 25%,
+      hsl(240, 15%, 14%) 50%,
+      hsl(220, 18%, 12%) 75%,
+      hsl(210, 20%, 10%) 100%);
 
     /* 噪点纹理 */
-    --noise: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSBiYXNlRnJlcXVlbmN5PSIwLjkiIG51bU9jdGF2ZXM9IjQiIHNlZWQ9IjIiLz48ZmVDb2xvck1hdHJpeCB2YWx1ZXM9IjAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAuMDIgMCIvPjwvZmlsdGVyPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIiBvcGFjaXR5PSIwLjQiLz48L3N2Zz4=");
+    --noise: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSBiYXNlRnJlcXVlbmN5PSIwLjkiIG51bU9jdGF2ZXM9IjQiIHNlZWQ9IjIiLz48ZmVDb2xvck1hdHJpeCB2YWx1ZXM9IjAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAuMDEgMCIvPjwvZmlsdGVyPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIiBvcGFjaXR5PSIwLjNiLz48L3N2Zz4=");
   }
 }
 
@@ -75,9 +76,9 @@
     background: var(--gradient-background);
     background-attachment: fixed;
     background-image: var(--noise), 
-                      radial-gradient(ellipse at top left, hsla(240, 60%, 30%, 0.15) 0%, transparent 50%),
-                      radial-gradient(ellipse at bottom right, hsla(220, 70%, 40%, 0.1) 0%, transparent 50%),
-                      radial-gradient(ellipse at center, hsla(260, 50%, 25%, 0.08) 0%, transparent 70%),
+                      radial-gradient(ellipse at top left, hsla(240, 60%, 40%, 0.12) 0%, transparent 60%),
+                      radial-gradient(ellipse at bottom right, hsla(220, 70%, 50%, 0.08) 0%, transparent 60%),
+                      radial-gradient(ellipse at center, hsla(260, 50%, 35%, 0.06) 0%, transparent 80%),
                       var(--gradient-background);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-feature-settings: 'cv11', 'ss01';
@@ -89,29 +90,31 @@
 @layer utilities {
   /* Linear风格组件样式 */
   .linear-card {
-    @apply bg-card border border-border/50 backdrop-blur-sm;
+    @apply bg-card border border-border/40 backdrop-blur-sm;
     background: linear-gradient(135deg, 
-      hsla(220, 25%, 12%, 0.8) 0%, 
-      hsla(220, 20%, 8%, 0.9) 100%);
+      hsla(220, 15%, 18%, 0.85) 0%, 
+      hsla(220, 12%, 16%, 0.95) 100%);
     box-shadow: 
-      inset 0 1px 0 hsla(210, 40%, 98%, 0.05),
-      0 1px 3px hsla(220, 25%, 0%, 0.3),
-      0 4px 12px hsla(220, 25%, 0%, 0.2);
+      inset 0 1px 0 hsla(210, 40%, 98%, 0.08),
+      0 1px 3px hsla(220, 25%, 0%, 0.25),
+      0 4px 12px hsla(220, 25%, 0%, 0.15),
+      0 0 0 1px hsla(210, 40%, 98%, 0.02);
   }
 
   .linear-glow {
     box-shadow: 
-      0 0 20px hsla(258, 90%, 66%, 0.15),
-      0 0 40px hsla(258, 90%, 66%, 0.1),
-      inset 0 1px 0 hsla(210, 40%, 98%, 0.05);
+      0 0 20px hsla(258, 90%, 66%, 0.2),
+      0 0 40px hsla(258, 90%, 66%, 0.12),
+      0 0 60px hsla(258, 90%, 66%, 0.06),
+      inset 0 1px 0 hsla(210, 40%, 98%, 0.08);
   }
 
   .linear-border {
     @apply border border-transparent;
     background: linear-gradient(var(--gradient-subtle)) padding-box,
                 linear-gradient(135deg, 
-                  hsla(258, 90%, 66%, 0.3) 0%, 
-                  hsla(206, 100%, 70%, 0.3) 100%) border-box;
+                  hsla(258, 90%, 66%, 0.4) 0%, 
+                  hsla(206, 100%, 70%, 0.4) 100%) border-box;
   }
 
   .text-gradient {
@@ -123,9 +126,9 @@
 
   .aurora-bg {
     background: 
-      radial-gradient(ellipse 80% 50% at 50% -20%, hsla(258, 90%, 66%, 0.15) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 80% at 120% 50%, hsla(206, 100%, 70%, 0.1) 0%, transparent 60%),
-      radial-gradient(ellipse 100% 100% at 0% 0%, hsla(240, 60%, 30%, 0.1) 0%, transparent 50%),
+      radial-gradient(ellipse 80% 50% at 50% -20%, hsla(258, 90%, 66%, 0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 120% 50%, hsla(206, 100%, 70%, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 100% 100% at 0% 0%, hsla(240, 60%, 40%, 0.08) 0%, transparent 50%),
       var(--gradient-subtle);
   }
 }
