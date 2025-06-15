@@ -23,49 +23,42 @@ const PainPointCard = ({
 }: PainPointCardProps) => {
   const getSeverityColor = (severity: string) => {
     const count = (severity.match(/🔥/g) || []).length;
-    if (count >= 4) return "neon-text";
-    if (count >= 3) return "text-orange-400 electric-glow";
+    if (count >= 4) return "text-red-400";
+    if (count >= 3) return "text-orange-400";
     return "text-yellow-400";
   };
 
   return (
-    <Card className={`group relative floating-card linear-card linear-hover shimmer-overlay ${
-      isPremium ? 'linear-glow animate-glow-pulse' : 'animate-pulse-electric'
-    }`}>
+    <Card className={`group relative bg-slate-900/50 border ${
+      isPremium ? 'border-purple-500/30 bg-gradient-to-br from-purple-900/10 to-blue-900/10' : 'border-gray-700'
+    } hover:border-purple-500/50 transition-all duration-300 backdrop-blur-sm`}>
       
-      {/* 电光背景效果 */}
-      <div className="absolute inset-0 opacity-20 rounded-lg overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary to-transparent animate-shimmer-electric" />
-        <div className="absolute bottom-0 right-0 w-full h-px bg-gradient-to-l from-transparent via-accent to-transparent animate-shimmer-electric" style={{ animationDelay: '1.5s' }} />
-      </div>
-      
-      <CardHeader className="relative z-10 pb-4">
+      <CardHeader className="pb-4">
         <div className="flex items-start justify-between mb-4">
-          <div className={`text-2xl font-light flex items-center gap-2 ${getSeverityColor(severity)}`}>
+          <div className={`text-2xl flex items-center gap-2 ${getSeverityColor(severity)}`}>
             {severity}
-            {isPremium && <Zap className="h-5 w-5 text-primary animate-pulse-electric" />}
+            {isPremium && <Zap className="h-5 w-5 text-purple-400" />}
           </div>
           {isPremium && (
             <Badge 
               variant="outline" 
-              className="text-xs font-medium border-primary/50 text-primary bg-primary/20 backdrop-blur-sm electric-glow animate-glow-pulse"
+              className="text-xs font-medium border-purple-500/50 text-purple-400 bg-purple-500/10"
             >
               Premium
             </Badge>
           )}
         </div>
         
-        <h3 className="text-lg font-medium leading-snug text-foreground group-hover:text-gradient transition-all duration-500">
+        <h3 className="text-lg font-semibold leading-snug text-white group-hover:text-purple-300 transition-colors duration-300">
           {title}
         </h3>
         
-        <div className="flex flex-wrap gap-2 mt-6">
+        <div className="flex flex-wrap gap-2 mt-4">
           {tags.map((tag, index) => (
             <Badge 
               key={index} 
               variant="outline" 
-              className="text-xs font-normal border-border/70 text-muted-foreground bg-card/50 backdrop-blur-sm hover:border-accent/50 hover:text-accent transition-all duration-300"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className="text-xs border-gray-600 text-gray-300 bg-gray-800/50 hover:border-purple-500/50 hover:text-purple-300 transition-all duration-300"
             >
               {tag}
             </Badge>
@@ -73,26 +66,26 @@ const PainPointCard = ({
         </div>
       </CardHeader>
 
-      <CardContent className="relative z-10 pt-0">
-        <p className="text-sm text-muted-foreground mb-8 leading-relaxed font-light line-clamp-3">
+      <CardContent className="pt-0">
+        <p className="text-sm text-gray-300 mb-6 leading-relaxed line-clamp-3">
           {originText}
         </p>
         
-        <div className="flex items-center justify-between text-xs text-muted-foreground mb-8">
-          <div className="flex items-center gap-2 group/stat hover:text-primary transition-colors duration-300">
-            <Users className="h-4 w-4 opacity-70 group-hover/stat:opacity-100 group-hover/stat:text-primary transition-all duration-300" />
-            <span className="font-medium">SaaS创始人</span>
+        <div className="flex items-center justify-between text-xs text-gray-400 mb-6">
+          <div className="flex items-center gap-2 hover:text-purple-400 transition-colors duration-300">
+            <Users className="h-4 w-4" />
+            <span>SaaS创始人</span>
           </div>
-          <div className="flex items-center gap-2 group/stat hover:text-accent transition-colors duration-300">
-            <TrendingUp className="h-4 w-4 opacity-70 group-hover/stat:opacity-100 group-hover/stat:text-accent transition-all duration-300" />
-            <span className="font-medium">热度上升</span>
+          <div className="flex items-center gap-2 hover:text-blue-400 transition-colors duration-300">
+            <TrendingUp className="h-4 w-4" />
+            <span>热度上升</span>
           </div>
         </div>
 
         <Button 
           variant="outline" 
           size="sm" 
-          className="w-full h-10 font-medium border-border/70 hover:border-accent/60 hover:text-accent hover:bg-accent/10 transition-all duration-300 group/btn backdrop-blur-sm"
+          className="w-full border-gray-600 text-gray-300 hover:border-purple-500 hover:text-purple-300 hover:bg-purple-500/10 transition-all duration-300 group/btn"
           onClick={onViewDetails}
         >
           查看详情

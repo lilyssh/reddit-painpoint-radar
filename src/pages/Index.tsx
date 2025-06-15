@@ -2,8 +2,15 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
+import Benefits from "@/components/Benefits";
+import Features from "@/components/Features";
 import PainPointCard from "@/components/PainPointCard";
+import Testimonials from "@/components/Testimonials";
+import CTA from "@/components/CTA";
+import Pricing from "@/components/Pricing";
+import Footer from "@/components/Footer";
 import EmailCapture from "@/components/EmailCapture";
 
 const Index = () => {
@@ -56,29 +63,32 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-slate-900">
+      {/* Header */}
+      <Header />
+
       {/* Hero Section */}
       <div onClick={scrollToPainPoints} className="cursor-pointer">
         <HeroSection />
       </div>
 
+      {/* Benefits */}
+      <Benefits />
+
+      {/* Features */}
+      <Features />
+
       {/* Pain Points Section */}
-      <section id="pain-points" className="py-24 px-6 relative">
-        {/* 背景装饰 */}
-        <div className="absolute inset-0 opacity-50">
-          <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-primary/10 rounded-full blur-3xl animate-pulse-subtle" />
-          <div className="absolute bottom-1/4 right-1/3 w-24 h-24 bg-accent/10 rounded-full blur-2xl animate-pulse-subtle" style={{ animationDelay: '2s' }} />
-        </div>
-        
-        <div className="max-w-6xl mx-auto relative">
+      <section id="pain-points" className="py-24 px-6 bg-slate-800/30">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border border-border/50 bg-card/50 backdrop-blur-sm text-muted-foreground mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border border-purple-500/20 bg-white/5 backdrop-blur-sm text-gray-300 mb-6">
               今日精选
             </div>
-            <h2 className="text-3xl md:text-4xl font-light mb-4 tracking-tight">
-              热门 <span className="text-gradient font-medium">痛点洞察</span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
+              热门 <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">痛点洞察</span>
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
+            <p className="text-lg text-gray-300 max-w-2xl mx-auto">
               基于 Reddit 社区真实讨论，AI 智能筛选的高价值商业机会
             </p>
           </div>
@@ -87,7 +97,7 @@ const Index = () => {
             {painPointsData.map((painPoint, index) => (
               <div 
                 key={index} 
-                className="animate-fade-in" 
+                className="animate-fade-in hover:transform hover:scale-105 transition-all duration-300" 
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <PainPointCard
@@ -101,10 +111,10 @@ const Index = () => {
           {/* CTA Section */}
           <div className="text-center">
             <div className="max-w-lg mx-auto">
-              <h3 className="text-xl font-medium mb-4 text-foreground">
+              <h3 className="text-xl font-semibold mb-4 text-white">
                 想要获得完整的痛点分析？
               </h3>
-              <p className="text-muted-foreground mb-8 font-light leading-relaxed">
+              <p className="text-gray-300 mb-8">
                 订阅我们的每日报告，获取详细的解决方案和验证工具
               </p>
               <EmailCapture />
@@ -113,39 +123,34 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Testimonials */}
+      <Testimonials />
+
+      {/* CTA */}
+      <CTA />
+
+      {/* Pricing */}
+      <Pricing />
+
+      {/* Footer */}
+      <Footer />
+
       {/* Subscribe Dialog */}
       <Dialog open={showSubscribeDialog} onOpenChange={setShowSubscribeDialog}>
-        <DialogContent className="linear-card max-w-md border-border/50">
+        <DialogContent className="bg-slate-900 border border-gray-700 max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-center text-foreground font-medium">
+            <DialogTitle className="text-center text-white">
               Premium 内容
             </DialogTitle>
           </DialogHeader>
           <div className="text-center py-6">
-            <p className="text-muted-foreground mb-6 font-light">
+            <p className="text-gray-300 mb-6">
               这是高价值痛点，需要订阅才能查看完整分析
             </p>
             <EmailCapture />
           </div>
         </DialogContent>
       </Dialog>
-
-      {/* Footer */}
-      <footer className="border-t border-border/30 py-12 px-6">
-        <div className="max-w-6xl mx-auto text-center">
-          <p className="text-muted-foreground text-sm font-light">
-            © 2024 RedditPainPoint Radar. All rights reserved.
-          </p>
-          <div className="mt-4">
-            <a 
-              href="#" 
-              className="text-xs text-muted-foreground hover:text-foreground transition-colors font-light"
-            >
-              DMCA报告
-            </a>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };
