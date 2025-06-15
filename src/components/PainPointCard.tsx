@@ -29,7 +29,7 @@ const PainPointCard = ({
   };
 
   return (
-    <Card className={`group relative overflow-hidden ${
+    <Card className={`group relative overflow-hidden shimmer-overlay ${
       isPremium 
         ? 'border-purple-500/30 bg-gradient-to-br from-purple-900/20 to-blue-900/20' 
         : 'bg-slate-900/50 border-gray-700'
