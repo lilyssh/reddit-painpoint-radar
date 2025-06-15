@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { ArrowDown, Sparkles, Zap, Star } from "lucide-react";
 
@@ -41,7 +40,7 @@ const HeroSection = () => {
           <h1 className="text-6xl md:text-8xl font-bold tracking-tight leading-tight animate-fade-in" style={{animationDelay: '0.2s'}}>
             <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent animate-gradient">停止猜测</span>
             <br />
-            <span className="text-white">用户真正需要什么</span>
+            <span className="text-white hover:animate-[rubberBand_1s_ease-in-out] cursor-default">用户真正需要什么</span>
           </h1>
         </div>
         
