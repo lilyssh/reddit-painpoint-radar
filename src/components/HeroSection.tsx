@@ -73,7 +73,7 @@ const HeroSection = () => {
             <div className="text-sm text-gray-400 font-medium tracking-wide uppercase">日均痛点</div>
           </div>
           <div className="text-center group hover-lift glass-effect rounded-2xl py-6">
-            <div className="text-3xl font-bold text-blue-400 mb-2 group-hover:scale-110 transition-transform duration-300 animate-glow">10min</div>
+            <div className="text-3xl font-bold text-blue-400 mb-2 group-hover:scale-110 transition-transform duration-300">10min</div>
             <div className="text-sm text-gray-400 font-medium tracking-wide uppercase">验证方案</div>
           </div>
           <div className="text-center group hover-lift glass-effect rounded-2xl py-6">
