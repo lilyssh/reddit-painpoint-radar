@@ -105,6 +105,59 @@
     background-size: 200% 100%;
     animation: shimmer 2s infinite;
   }
+
+  .meteor-border {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .meteor-border::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(147, 51, 234, 0.8),
+      rgba(59, 130, 246, 0.8),
+      transparent
+    );
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+  }
+
+  .meteor-border:hover::before {
+    opacity: 1;
+    animation: meteorRun 2s linear infinite;
+  }
+
+  .meteor-border::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    opacity: 0;
+    border-radius: inherit;
+    transition: opacity 0.3s ease;
+  }
+
+  .meteor-border:hover::after {
+    opacity: 1;
+    animation: lightWave 2s ease-in-out infinite;
+  }
 }
 
 @keyframes fadeIn {
@@ -176,5 +229,28 @@
   50% {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes meteorRun {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes lightWave {
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
   }
 }
