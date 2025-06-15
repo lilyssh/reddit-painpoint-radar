@@ -68,15 +68,15 @@ const HeroSection = () => {
 
         {/* 数据指标 */}
         <div className="grid grid-cols-3 gap-12 max-w-2xl mx-auto animate-fade-in" style={{animationDelay: '0.8s'}}>
-          <div className="text-center group hover-lift glass-effect rounded-2xl py-6 meteor-border">
+          <div className="text-center group hover-lift glass-effect rounded-2xl py-6">
             <div className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300 animate-pulse-slow">3+</div>
             <div className="text-sm text-gray-400 font-medium tracking-wide uppercase">日均痛点</div>
           </div>
-          <div className="text-center group hover-lift glass-effect rounded-2xl py-6 meteor-border">
+          <div className="text-center group hover-lift glass-effect rounded-2xl py-6">
             <div className="text-3xl font-bold text-blue-400 mb-2 group-hover:scale-110 transition-transform duration-300">10min</div>
             <div className="text-sm text-gray-400 font-medium tracking-wide uppercase">验证方案</div>
           </div>
-          <div className="text-center group hover-lift glass-effect rounded-2xl py-6 meteor-border">
+          <div className="text-center group hover-lift glass-effect rounded-2xl py-6">
             <div className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300 animate-pulse-slow">99%</div>
             <div className="text-sm text-gray-400 font-medium tracking-wide uppercase">真实需求</div>
           </div>
