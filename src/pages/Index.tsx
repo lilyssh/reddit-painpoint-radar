@@ -72,13 +72,7 @@ const Index = () => {
         <HeroSection />
       </div>
 
-      {/* Benefits */}
-      <Benefits />
-
-      {/* Features */}
-      <Features />
-
-      {/* Pain Points Section */}
+      {/* Pain Points Section - 放在Hero Section下面 */}
       <section id="pain-points" className="py-24 px-6 bg-slate-800/30">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
@@ -122,6 +116,12 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Benefits */}
+      <Benefits />
+
+      {/* Features */}
+      <Features />
 
       {/* Testimonials */}
       <Testimonials />
