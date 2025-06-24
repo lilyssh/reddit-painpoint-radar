@@ -16,7 +16,7 @@ const PainPointsPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCommunity, setSelectedCommunity] = useState("全部社区");
   const [sortBy, setSortBy] = useState("热度排序");
-  const [viewMode, setViewMode] = useState("cards");
+  const [viewMode, setViewMode] = useState("list");
 
   return (
     <div className="min-h-screen bg-slate-900">
@@ -29,11 +29,8 @@ const PainPointsPage = () => {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-white mb-2">
-                痛点探索器 · <span className="text-blue-400">Reddit洞察</span>
+                痛点探索
               </h1>
-              <p className="text-gray-400 text-base">
-                从Reddit社区中发现真实的用户痛点，挖掘下一个SaaS产品机会
-              </p>
             </div>
             <div className="flex items-center gap-4">
               <div className="relative">
@@ -45,6 +42,9 @@ const PainPointsPage = () => {
                   className="pl-10 w-80 bg-slate-700 border-gray-600 text-white placeholder-gray-400 focus:border-purple-500"
                 />
               </div>
+              <Badge variant="outline" className="text-xs border-gray-600 text-gray-300 bg-slate-800/50">
+                实时更新
+              </Badge>
               <SortingFilters sortBy={sortBy} setSortBy={setSortBy} />
             </div>
           </div>
@@ -106,13 +106,13 @@ const PainPointsPage = () => {
                 
                 <Tabs value={viewMode} onValueChange={setViewMode} className="w-auto">
                   <TabsList className="bg-slate-700 border-gray-600">
-                    <TabsTrigger value="cards" className="text-gray-300 data-[state=active]:text-white">
-                      <Grid3X3 className="h-4 w-4 mr-1" />
-                      卡片
-                    </TabsTrigger>
                     <TabsTrigger value="list" className="text-gray-300 data-[state=active]:text-white">
                       <List className="h-4 w-4 mr-1" />
                       列表
+                    </TabsTrigger>
+                    <TabsTrigger value="cards" className="text-gray-300 data-[state=active]:text-white">
+                      <Grid3X3 className="h-4 w-4 mr-1" />
+                      卡片
                     </TabsTrigger>
                   </TabsList>
                 </Tabs>
@@ -120,15 +120,15 @@ const PainPointsPage = () => {
             </div>
 
             <Tabs value={viewMode} className="w-full">
-              <TabsContent value="cards" className="mt-0">
-                <PainPointsList 
+              <TabsContent value="list" className="mt-0">
+                <PainPointsListView 
                   searchTerm={searchTerm}
                   selectedCommunity={selectedCommunity}
                   sortBy={sortBy}
                 />
               </TabsContent>
-              <TabsContent value="list" className="mt-0">
-                <PainPointsListView 
+              <TabsContent value="cards" className="mt-0">
+                <PainPointsList 
                   searchTerm={searchTerm}
                   selectedCommunity={selectedCommunity}
                   sortBy={sortBy}

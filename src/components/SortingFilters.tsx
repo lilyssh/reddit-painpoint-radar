@@ -1,6 +1,5 @@
 
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,39 +24,33 @@ const SortingFilters = ({ sortBy, setSortBy }: SortingFiltersProps) => {
   const currentSort = sortOptions.find(option => option.value === sortBy);
 
   return (
-    <div className="flex items-center gap-3">
-      <Badge variant="outline" className="text-xs border-gray-600 text-gray-300 bg-slate-800/50">
-        实时更新
-      </Badge>
-      
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button 
-            variant="outline" 
-            className="glass-effect border-gray-600 text-gray-300 hover:border-purple-500 hover:text-purple-300"
-          >
-            <Filter className="h-4 w-4 mr-2" />
-            {currentSort?.label}
-            <ChevronDown className="h-4 w-4 ml-2" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="bg-slate-800 border-gray-700">
-          {sortOptions.map((option) => {
-            const Icon = option.icon;
-            return (
-              <DropdownMenuItem
-                key={option.value}
-                onClick={() => setSortBy(option.value)}
-                className="text-gray-300 hover:text-white hover:bg-slate-700 cursor-pointer"
-              >
-                <Icon className="h-4 w-4 mr-2" />
-                {option.label}
-              </DropdownMenuItem>
-            );
-          })}
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button 
+          variant="outline" 
+          className="glass-effect border-gray-600 text-gray-300 hover:border-purple-500 hover:text-purple-300"
+        >
+          <Filter className="h-4 w-4 mr-2" />
+          {currentSort?.label}
+          <ChevronDown className="h-4 w-4 ml-2" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="bg-slate-800 border-gray-700">
+        {sortOptions.map((option) => {
+          const Icon = option.icon;
+          return (
+            <DropdownMenuItem
+              key={option.value}
+              onClick={() => setSortBy(option.value)}
+              className="text-gray-300 hover:text-white hover:bg-slate-700 cursor-pointer"
+            >
+              <Icon className="h-4 w-4 mr-2" />
+              {option.label}
+            </DropdownMenuItem>
+          );
+        })}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
