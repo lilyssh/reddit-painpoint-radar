@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Filter, TrendingUp, Clock, Fire, Users, ChevronDown } from "lucide-react";
+import { Filter, TrendingUp, Clock, Flame, Users, ChevronDown } from "lucide-react";
 
 interface SortingFiltersProps {
   sortBy: string;
@@ -16,7 +16,7 @@ interface SortingFiltersProps {
 
 const SortingFilters = ({ sortBy, setSortBy }: SortingFiltersProps) => {
   const sortOptions = [
-    { value: "热度排序", label: "热度排序", icon: Fire },
+    { value: "热度排序", label: "热度排序", icon: Flame },
     { value: "时间排序", label: "时间排序", icon: Clock },
     { value: "趋势排序", label: "趋势排序", icon: TrendingUp },
     { value: "社区排序", label: "社区排序", icon: Users },

@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, Filter, TrendingUp, Clock, Fire, Users, ExternalLink } from "lucide-react";
+import { Search, Filter, TrendingUp, Clock, Flame, Users, ExternalLink } from "lucide-react";
 import CommunityList from "@/components/CommunityList";
 import PainPointsList from "@/components/PainPointsList";
 import SortingFilters from "@/components/SortingFilters";
