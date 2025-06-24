@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ExternalLink, MessageCircle, TrendingUp, Clock, Users, Star, Bookmark } from "lucide-react";
+import { ExternalLink, MessageCircle, TrendingUp, Clock, Users, Star, Bookmark, BarChart3 } from "lucide-react";
 
 interface PainPointsListViewProps {
   searchTerm: string;
@@ -129,6 +129,16 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
     );
   };
 
+  const handleAnalyze = (point: any) => {
+    console.log("分析痛点:", point.title);
+    // 这里可以添加分析功能
+  };
+
+  const handleRowClick = (point: any) => {
+    console.log("查看痛点详情:", point.title);
+    // 这里可以添加查看详情功能
+  };
+
   return (
     <div className="space-y-4">
       {/* Table Header */}
@@ -149,7 +159,11 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       {/* List Items */}
       <div className="space-y-3">
         {filteredPainPoints.map((point, index) => (
-          <Card key={index} className="bg-slate-800/30 border-gray-700 hover:bg-slate-800/50 transition-all duration-300 group">
+          <Card 
+            key={index} 
+            className="bg-slate-800/30 border-gray-700 hover:bg-slate-800/50 transition-all duration-300 group cursor-pointer"
+            onClick={() => handleRowClick(point)}
+          >
             <div className="p-4">
               <div className="grid grid-cols-12 gap-4 items-center">
                 {/* Title & Tags */}
@@ -184,7 +198,6 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                     <span className={`text-sm font-medium ${getSeverityColor(point.severity)}`}>
                       {"🔥".repeat(point.severity)}
                     </span>
-                    <span className="text-xs text-gray-400">({point.severity}/5)</span>
                   </div>
                 </div>
 
@@ -227,19 +240,41 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
 
                 {/* Actions */}
                 <div className="col-span-1">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1">
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => handleBookmark(index)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAnalyze(point);
+                      }}
+                      className="text-blue-400 hover:text-blue-300 p-1 h-auto"
+                      title="AI分析"
+                    >
+                      <BarChart3 className="h-4 w-4" />
+                    </Button>
+                    
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleBookmark(index);
+                      }}
                       className={`p-1 h-auto ${bookmarkedItems.includes(index) ? 'text-yellow-400' : 'text-gray-400 hover:text-yellow-400'}`}
+                      title="收藏"
                     >
                       <Bookmark className="h-4 w-4" />
                     </Button>
+                    
                     <Button
                       variant="ghost"
                       size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
                       className="text-gray-400 hover:text-white p-1 h-auto"
+                      title="打开原链接"
                     >
                       <ExternalLink className="h-4 w-4" />
                     </Button>

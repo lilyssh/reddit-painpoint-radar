@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +10,7 @@ import CommunityList from "@/components/CommunityList";
 import PainPointsList from "@/components/PainPointsList";
 import PainPointsListView from "@/components/PainPointsListView";
 import SortingFilters from "@/components/SortingFilters";
+import SearchDropdown from "@/components/SearchDropdown";
 
 const PainPointsPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -32,19 +32,8 @@ const PainPointsPage = () => {
                 痛点探索
               </h1>
             </div>
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <Input
-                  placeholder="搜索痛点、标签或关键词..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 w-80 bg-slate-700 border-gray-600 text-white placeholder-gray-400 focus:border-purple-500"
-                />
-              </div>
-              <Badge variant="outline" className="text-xs border-gray-600 text-gray-300 bg-slate-800/50">
-                实时更新
-              </Badge>
+            <div className="flex items-center gap-4 w-auto">
+              <SearchDropdown searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
               <SortingFilters sortBy={sortBy} setSortBy={setSortBy} />
             </div>
           </div>
@@ -59,6 +48,7 @@ const PainPointsPage = () => {
             <CommunityList 
               selectedCommunity={selectedCommunity}
               onSelectCommunity={setSelectedCommunity}
+              searchTerm={searchTerm}
             />
           </div>
 
