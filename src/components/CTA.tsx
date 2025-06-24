@@ -1,8 +1,15 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const CTA = () => {
+  const navigate = useNavigate();
+
+  const handleExploreClick = () => {
+    navigate('/pain-points');
+  };
+
   return (
     <section className="py-24 bg-gradient-to-r from-purple-900/20 to-blue-900/20 border-t border-purple-500/20">
       <div className="max-w-4xl mx-auto px-6 text-center">
@@ -18,6 +25,7 @@ const CTA = () => {
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
           <Button 
             size="lg" 
+            onClick={handleExploreClick}
             className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold px-12 py-4 h-auto text-lg border-0 shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 hover:scale-105"
           >
             免费开始探索

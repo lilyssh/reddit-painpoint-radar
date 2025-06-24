@@ -1,7 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { ArrowDown, Sparkles, Zap, Star } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
+  const handleExploreClick = () => {
+    navigate('/pain-points');
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* 动态渐变背景 */}
@@ -54,6 +61,7 @@ const HeroSection = () => {
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-20 animate-fade-in" style={{animationDelay: '0.6s'}}>
           <Button 
             size="lg" 
+            onClick={handleExploreClick}
             className="group bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold px-10 py-4 h-auto text-lg border-0 shadow-2xl hover:shadow-purple-500/25 transition-all duration-500 hover:scale-110 animate-glow"
           >
             开始探索
