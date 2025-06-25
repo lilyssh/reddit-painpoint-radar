@@ -7,7 +7,7 @@ import HeroSection from "@/components/HeroSection";
 import Benefits from "@/components/Benefits";
 import Features from "@/components/Features";
 import PainPointCard from "@/components/PainPointCard";
-import Testimonials from "@/components/Testimonials";
+import MarqueeTestimonials from "@/components/MarqueeTestimonials";
 import CTA from "@/components/CTA";
 import Pricing from "@/components/Pricing";
 import Footer from "@/components/Footer";
@@ -123,8 +123,8 @@ const Index = () => {
       {/* Features */}
       <Features />
 
-      {/* Testimonials */}
-      <Testimonials />
+      {/* MarqueeTestimonials - 替换原来的 Testimonials */}
+      <MarqueeTestimonials />
 
       {/* CTA */}
       <CTA />

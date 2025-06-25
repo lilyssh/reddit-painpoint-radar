@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { ExternalLink, MessageCircle, TrendingUp, Clock, Users, Star, Bookmark, BarChart3, CheckCircle } from "lucide-react";
+import { ExternalLink, MessageCircle, TrendingUp, Clock, Users, Star, Bookmark, BarChart3, CheckCircle, Heart, Eye } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface PainPointsListViewProps {
@@ -31,7 +30,9 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       isPremium: true,
       opportunity: "自动退款管理工具",
       marketSize: "中等",
-      trendData: [20, 25, 30, 45, 60, 80, 95]
+      trendData: [20, 25, 30, 45, 60, 80, 95],
+      verifications: 23,
+      bookmarks: 156
     },
     {
       title: "多平台内容发布要重复操作",
@@ -45,7 +46,9 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       isPremium: false,
       opportunity: "多平台内容分发工具",
       marketSize: "大型",
-      trendData: [15, 20, 25, 35, 50, 70, 85]
+      trendData: [15, 20, 25, 35, 50, 70, 85],
+      verifications: 45,
+      bookmarks: 234
     },
     {
       title: "团队协作工具数据不同步",
@@ -59,7 +62,9 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       isPremium: false,
       opportunity: "统一工作空间",
       marketSize: "大型",
-      trendData: [10, 15, 20, 25, 30, 40, 50]
+      trendData: [10, 15, 20, 25, 30, 40, 50],
+      verifications: 12,
+      bookmarks: 78
     },
     {
       title: "视频会议中背景噪音干扰",
@@ -73,7 +78,9 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       isPremium: true,
       opportunity: "智能音频处理",
       marketSize: "中等",
-      trendData: [30, 40, 55, 70, 85, 90, 95]
+      trendData: [30, 40, 55, 70, 85, 90, 95],
+      verifications: 67,
+      bookmarks: 345
     },
     {
       title: "电商平台库存管理混乱",
@@ -87,7 +94,9 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       isPremium: true,
       opportunity: "多平台库存同步",
       marketSize: "大型",
-      trendData: [40, 50, 65, 80, 90, 95, 98]
+      trendData: [40, 50, 65, 80, 90, 95, 98],
+      verifications: 89,
+      bookmarks: 456
     },
     {
       title: "代码审查流程效率低下",
@@ -101,7 +110,9 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       isPremium: false,
       opportunity: "AI代码审查助手",
       marketSize: "中等",
-      trendData: [5, 8, 12, 18, 25, 30, 35]
+      trendData: [5, 8, 12, 18, 25, 30, 35],
+      verifications: 34,
+      bookmarks: 123
     }
   ];
 
@@ -273,7 +284,7 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                     <div className="col-span-2">
                       <div>
                         <div className="text-sm text-white font-medium mb-1">{point.opportunity}</div>
-                        <div className={`text-sm ${getMarketSizeColor(point.marketSize)}`}>
+                        <div className={`text-sm font-semibold ${getMarketSizeColor(point.marketSize)}`}>
                           市场: {point.marketSize}
                         </div>
                       </div>
@@ -398,28 +409,45 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                     </div>
                   </div>
 
-                  {/* Expandable Content */}
-                  <div className="mt-3 pt-3 border-t border-gray-700/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="text-sm text-gray-300 line-clamp-2">
+                  {/* Content Area - Always Visible */}
+                  <div className="mt-4 pt-4 border-t border-gray-600/30">
+                    <div className="text-sm text-gray-300 line-clamp-2 mb-4">
                       <span className="text-gray-500">原文:</span> {point.originText}
                     </div>
                     
-                    {/* AI Assistant Buttons */}
-                    <div className="flex gap-2 mt-3">
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        className="text-xs bg-gradient-to-r from-purple-500/10 to-blue-500/10 border-purple-500/30 text-purple-300 hover:border-purple-500/50"
-                      >
-                        🚀 一键生成验证方案
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        className="text-xs bg-gradient-to-r from-green-500/10 to-blue-500/10 border-green-500/30 text-green-300 hover:border-green-500/50"
-                      >
-                        📋 生成落地路线图
-                      </Button>
+                    {/* Tool Operation Area - Separated with subtle line */}
+                    <div className="pt-3 border-t border-gray-700/20">
+                      {/* AI Assistant Buttons */}
+                      <div className="flex gap-2 mb-3">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          className="text-xs bg-gradient-to-r from-purple-500/10 to-blue-500/10 border-purple-500/30 text-purple-300 hover:border-purple-500/50"
+                        >
+                          🚀 一键生成验证方案
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          className="text-xs bg-gradient-to-r from-green-500/10 to-blue-500/10 border-green-500/30 text-green-300 hover:border-green-500/50"
+                        >
+                          📋 生成落地路线图
+                        </Button>
+                      </div>
+
+                      {/* Social Proof */}
+                      <div className="flex items-center justify-between text-xs text-gray-400">
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-1">
+                            <Eye className="h-3 w-3" />
+                            <span>已被验证 {point.verifications} 次</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Heart className="h-3 w-3" />
+                            <span>{point.bookmarks} 人收藏</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
