@@ -3,7 +3,9 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ExternalLink, MessageCircle, TrendingUp, Clock, Users, Star, Bookmark, BarChart3 } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { ExternalLink, MessageCircle, TrendingUp, Clock, Users, Star, Bookmark, BarChart3, CheckCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface PainPointsListViewProps {
   searchTerm: string;
@@ -13,6 +15,8 @@ interface PainPointsListViewProps {
 
 const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPointsListViewProps) => {
   const [bookmarkedItems, setBookmarkedItems] = useState<number[]>([]);
+  const [loadingItems, setLoadingItems] = useState<number[]>([]);
+  const { toast } = useToast();
 
   const painPointsData = [
     {
@@ -26,7 +30,8 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       date: "2024/1/15",
       isPremium: true,
       opportunity: "自动退款管理工具",
-      marketSize: "中等"
+      marketSize: "中等",
+      trendData: [20, 25, 30, 45, 60, 80, 95]
     },
     {
       title: "多平台内容发布要重复操作",
@@ -39,7 +44,8 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       date: "2024/1/14",
       isPremium: false,
       opportunity: "多平台内容分发工具",
-      marketSize: "大型"
+      marketSize: "大型",
+      trendData: [15, 20, 25, 35, 50, 70, 85]
     },
     {
       title: "团队协作工具数据不同步",
@@ -52,7 +58,8 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       date: "2024/1/13",
       isPremium: false,
       opportunity: "统一工作空间",
-      marketSize: "大型"
+      marketSize: "大型",
+      trendData: [10, 15, 20, 25, 30, 40, 50]
     },
     {
       title: "视频会议中背景噪音干扰",
@@ -65,7 +72,8 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       date: "2024/1/12",
       isPremium: true,
       opportunity: "智能音频处理",
-      marketSize: "中等"
+      marketSize: "中等",
+      trendData: [30, 40, 55, 70, 85, 90, 95]
     },
     {
       title: "电商平台库存管理混乱",
@@ -78,11 +86,12 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       date: "2024/1/11",
       isPremium: true,
       opportunity: "多平台库存同步",
-      marketSize: "大型"
+      marketSize: "大型",
+      trendData: [40, 50, 65, 80, 90, 95, 98]
     },
     {
       title: "代码审查流程效率低下",
-      severity: 3,
+      severity: 2,
       tags: ["#开发", "#代码审查", "#AI"],
       originText: "Code reviews take 2-3 days minimum. Senior devs are bottlenecked, junior devs wait around. Need AI-assisted pre-review to catch obvious issues first.",
       community: "Technology 科技",
@@ -91,7 +100,8 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       date: "2024/1/10",
       isPremium: false,
       opportunity: "AI代码审查助手",
-      marketSize: "中等"
+      marketSize: "中等",
+      trendData: [5, 8, 12, 18, 25, 30, 35]
     }
   ];
 
@@ -106,208 +116,334 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
     return true;
   });
 
-  const getSeverityColor = (severity: number) => {
-    if (severity >= 5) return "text-red-400";
-    if (severity >= 4) return "text-orange-400";
-    return "text-yellow-400";
+  const getSeverityDisplay = (severity: number) => {
+    if (severity >= 5) return { flames: "🔥🔥🔥🔥🔥", color: "text-red-400", bg: "bg-red-500/10" };
+    if (severity >= 4) return { flames: "🔥🔥🔥🔥", color: "text-orange-400", bg: "bg-orange-500/10" };
+    if (severity >= 3) return { flames: "🔥🔥🔥", color: "text-yellow-400", bg: "bg-yellow-500/10" };
+    if (severity >= 2) return { flames: "🔥🔥", color: "text-blue-400", bg: "bg-blue-500/10" };
+    return { flames: "🔥", color: "text-gray-400", bg: "bg-gray-500/10" };
   };
 
   const getMarketSizeColor = (size: string) => {
     switch (size) {
-      case "大型": return "text-green-400";
-      case "中等": return "text-yellow-400";
+      case "大型": return "text-green-400 font-semibold";
+      case "中等": return "text-yellow-400 font-medium";
       case "小型": return "text-gray-400";
       default: return "text-gray-400";
     }
   };
 
   const handleBookmark = (index: number) => {
+    const isBookmarked = bookmarkedItems.includes(index);
+    
     setBookmarkedItems(prev => 
-      prev.includes(index) 
+      isBookmarked
         ? prev.filter(id => id !== index)
         : [...prev, index]
     );
+
+    toast({
+      title: isBookmarked ? "取消收藏" : "已收藏",
+      description: isBookmarked ? "已从收藏列表中移除" : "已添加到收藏列表",
+      duration: 2000,
+    });
   };
 
-  const handleAnalyze = (point: any) => {
+  const handleAnalyze = (point: any, index: number) => {
+    setLoadingItems(prev => [...prev, index]);
     console.log("分析痛点:", point.title);
-    // 这里可以添加分析功能
+    
+    // Simulate API call
+    setTimeout(() => {
+      setLoadingItems(prev => prev.filter(id => id !== index));
+      toast({
+        title: "AI分析完成",
+        description: `已生成 "${point.title}" 的详细分析报告`,
+        duration: 3000,
+      });
+    }, 2000);
   };
 
   const handleRowClick = (point: any) => {
     console.log("查看痛点详情:", point.title);
-    // 这里可以添加查看详情功能
   };
 
+  const TrendSparkline = ({ data }: { data: number[] }) => (
+    <div className="flex items-end gap-0.5 h-6">
+      {data.map((value, i) => (
+        <div
+          key={i}
+          className="bg-gradient-to-t from-purple-500 to-purple-300 w-1 rounded-sm opacity-70"
+          style={{ height: `${(value / 100) * 24}px` }}
+        />
+      ))}
+    </div>
+  );
+
   return (
-    <div className="space-y-4">
-      {/* Table Header */}
-      <Card className="bg-slate-800/50 border-gray-700">
-        <div className="p-4">
-          <div className="grid grid-cols-12 gap-4 text-sm font-medium text-gray-400">
-            <div className="col-span-4">痛点标题</div>
-            <div className="col-span-2">严重程度</div>
-            <div className="col-span-2">商机评估</div>
-            <div className="col-span-1">热度</div>
-            <div className="col-span-1">社区</div>
-            <div className="col-span-1">日期</div>
-            <div className="col-span-1">操作</div>
-          </div>
-        </div>
-      </Card>
-
-      {/* List Items */}
+    <TooltipProvider>
       <div className="space-y-3">
-        {filteredPainPoints.map((point, index) => (
-          <Card 
-            key={index} 
-            className="bg-slate-800/30 border-gray-700 hover:bg-slate-800/50 transition-all duration-300 group cursor-pointer"
-            onClick={() => handleRowClick(point)}
-          >
-            <div className="p-4">
-              <div className="grid grid-cols-12 gap-4 items-center">
-                {/* Title & Tags */}
-                <div className="col-span-4">
-                  <div className="flex items-start gap-3">
-                    {point.isPremium && (
-                      <Star className="h-4 w-4 text-yellow-400 mt-1 flex-shrink-0" />
-                    )}
-                    <div>
-                      <h3 className="text-white font-medium text-sm mb-2 group-hover:text-purple-300 transition-colors">
-                        {point.title}
-                      </h3>
-                      <div className="flex flex-wrap gap-1">
-                        {point.tags.slice(0, 2).map((tag, tagIndex) => (
-                          <Badge key={tagIndex} variant="outline" className="text-xs border-gray-600 text-gray-400 bg-slate-700/50">
-                            {tag}
-                          </Badge>
-                        ))}
-                        {point.tags.length > 2 && (
-                          <Badge variant="outline" className="text-xs border-gray-600 text-gray-400 bg-slate-700/50">
-                            +{point.tags.length - 2}
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+        {/* Table Header */}
+        <Card className="bg-slate-800/50 border-gray-700 glass-card">
+          <div className="p-3">
+            <div className="grid grid-cols-12 gap-4 text-sm font-medium text-gray-400">
+              <div className="col-span-4">痛点标题</div>
+              <div className="col-span-2">严重程度</div>
+              <div className="col-span-2">商机评估</div>
+              <div className="col-span-1">热度趋势</div>
+              <div className="col-span-1">社区</div>
+              <div className="col-span-1">日期</div>
+              <div className="col-span-1">操作</div>
+            </div>
+          </div>
+        </Card>
 
-                {/* Severity */}
-                <div className="col-span-2">
-                  <div className="flex items-center gap-2">
-                    <span className={`text-sm font-medium ${getSeverityColor(point.severity)}`}>
-                      {"🔥".repeat(point.severity)}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Market Opportunity */}
-                <div className="col-span-2">
-                  <div>
-                    <div className="text-sm text-white font-medium">{point.opportunity}</div>
-                    <div className={`text-xs ${getMarketSizeColor(point.marketSize)}`}>
-                      市场: {point.marketSize}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Votes */}
-                <div className="col-span-1">
-                  <div className="flex items-center gap-1">
-                    <TrendingUp className="h-4 w-4 text-green-400" />
-                    <span className="text-sm text-white">{point.votes}</span>
-                  </div>
-                  <div className="flex items-center gap-1 mt-1">
-                    <MessageCircle className="h-3 w-3 text-gray-400" />
-                    <span className="text-xs text-gray-400">{point.comments}</span>
-                  </div>
-                </div>
-
-                {/* Community */}
-                <div className="col-span-1">
-                  <Badge variant="outline" className="text-xs border-purple-500/50 text-purple-300 bg-purple-500/10">
-                    {point.community}
+        {/* List Items */}
+        <div className="space-y-2">
+          {filteredPainPoints.map((point, index) => {
+            const severity = getSeverityDisplay(point.severity);
+            const isLoading = loadingItems.includes(index);
+            
+            return (
+              <Card 
+                key={index} 
+                className="bg-slate-800/30 border-gray-700 hover:bg-slate-800/50 transition-all duration-300 group cursor-pointer relative overflow-hidden glow-border-card"
+                onClick={() => handleRowClick(point)}
+              >
+                {/* Date Badge - Top Right Corner */}
+                <div className="absolute top-2 right-2 z-10">
+                  <Badge variant="outline" className="text-xs border-gray-600 text-gray-400 bg-slate-800/80 backdrop-blur">
+                    {point.date}
                   </Badge>
                 </div>
 
-                {/* Date */}
-                <div className="col-span-1">
-                  <div className="flex items-center gap-1">
-                    <Clock className="h-3 w-3 text-gray-400" />
-                    <span className="text-xs text-gray-400">{point.date}</span>
+                {/* Loading Shimmer Overlay */}
+                {isLoading && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/10 to-transparent animate-shimmer z-20" />
+                )}
+
+                <div className="p-3">
+                  <div className="grid grid-cols-12 gap-4 items-center">
+                    {/* Title & Tags */}
+                    <div className="col-span-4">
+                      <div className="flex items-start gap-3">
+                        {point.isPremium && (
+                          <Star className="h-4 w-4 text-yellow-400 mt-1 flex-shrink-0" />
+                        )}
+                        <div>
+                          <h3 className="text-white font-medium text-sm mb-2 group-hover:text-purple-300 transition-colors leading-tight">
+                            {point.title}
+                          </h3>
+                          <div className="flex flex-wrap gap-1">
+                            {point.tags.slice(0, 2).map((tag, tagIndex) => (
+                              <Tooltip key={tagIndex}>
+                                <TooltipTrigger asChild>
+                                  <Badge 
+                                    variant="outline" 
+                                    className="text-xs border-gray-600 text-gray-400 bg-slate-700/50 hover:border-purple-500/50 hover:text-purple-300 cursor-pointer transition-all"
+                                  >
+                                    {tag}
+                                  </Badge>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>点击可筛选相关痛点</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            ))}
+                            {point.tags.length > 2 && (
+                              <Badge variant="outline" className="text-xs border-gray-600 text-gray-400 bg-slate-700/50">
+                                +{point.tags.length - 2}
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Severity */}
+                    <div className="col-span-2">
+                      <div className={`flex items-center gap-2 px-2 py-1 rounded-md ${severity.bg}`}>
+                        <span className={`text-sm font-medium ${severity.color}`}>
+                          {severity.flames}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Market Opportunity */}
+                    <div className="col-span-2">
+                      <div>
+                        <div className="text-sm text-white font-medium mb-1">{point.opportunity}</div>
+                        <div className={`text-sm ${getMarketSizeColor(point.marketSize)}`}>
+                          市场: {point.marketSize}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Trend & Votes */}
+                    <div className="col-span-1">
+                      <div className="space-y-2">
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div className="cursor-help">
+                              <TrendSparkline data={point.trendData} />
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>7天热度趋势图</p>
+                          </TooltipContent>
+                        </Tooltip>
+                        
+                        <div className="flex items-center gap-1">
+                          <TrendingUp className="h-3 w-3 text-green-400" />
+                          <span className="text-xs text-white font-medium">{point.votes}</span>
+                        </div>
+                        
+                        <div className="flex items-center gap-1">
+                          <MessageCircle className="h-3 w-3 text-gray-400" />
+                          <span className="text-xs text-gray-400">{point.comments}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Community */}
+                    <div className="col-span-1">
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Badge 
+                            variant="outline" 
+                            className="text-xs border-purple-500/50 text-purple-300 bg-purple-500/10 hover:bg-purple-500/20 cursor-pointer transition-all"
+                          >
+                            {point.community}
+                          </Badge>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>点击筛选该社区</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+
+                    {/* Date - Hidden (moved to top right) */}
+                    <div className="col-span-1">
+                      {/* Empty space where date was */}
+                    </div>
+
+                    {/* Actions */}
+                    <div className="col-span-1">
+                      <div className="flex items-center gap-1">
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleAnalyze(point, index);
+                              }}
+                              disabled={isLoading}
+                              className="text-blue-400 hover:text-blue-300 p-1 h-auto hover:scale-110 transition-all"
+                            >
+                              <BarChart3 className={`h-4 w-4 ${isLoading ? 'animate-pulse' : ''}`} />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>AI智能分析</p>
+                          </TooltipContent>
+                        </Tooltip>
+                        
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleBookmark(index);
+                              }}
+                              className={`p-1 h-auto hover:scale-110 transition-all ${
+                                bookmarkedItems.includes(index) 
+                                  ? 'text-yellow-400' 
+                                  : 'text-gray-400 hover:text-yellow-400'
+                              }`}
+                            >
+                              {bookmarkedItems.includes(index) ? (
+                                <CheckCircle className="h-4 w-4" />
+                              ) : (
+                                <Bookmark className="h-4 w-4" />
+                              )}
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{bookmarkedItems.includes(index) ? '取消收藏' : '收藏痛点'}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                        
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                              }}
+                              className="text-gray-400 hover:text-white p-1 h-auto hover:scale-110 transition-all"
+                            >
+                              <ExternalLink className="h-4 w-4" />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>打开原链接</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Expandable Content */}
+                  <div className="mt-3 pt-3 border-t border-gray-700/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="text-sm text-gray-300 line-clamp-2">
+                      <span className="text-gray-500">原文:</span> {point.originText}
+                    </div>
+                    
+                    {/* AI Assistant Buttons */}
+                    <div className="flex gap-2 mt-3">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        className="text-xs bg-gradient-to-r from-purple-500/10 to-blue-500/10 border-purple-500/30 text-purple-300 hover:border-purple-500/50"
+                      >
+                        🚀 一键生成验证方案
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        className="text-xs bg-gradient-to-r from-green-500/10 to-blue-500/10 border-green-500/30 text-green-300 hover:border-green-500/50"
+                      >
+                        📋 生成落地路线图
+                      </Button>
+                    </div>
                   </div>
                 </div>
+              </Card>
+            );
+          })}
+        </div>
 
-                {/* Actions */}
-                <div className="col-span-1">
-                  <div className="flex items-center gap-1">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleAnalyze(point);
-                      }}
-                      className="text-blue-400 hover:text-blue-300 p-1 h-auto"
-                      title="AI分析"
-                    >
-                      <BarChart3 className="h-4 w-4" />
-                    </Button>
-                    
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleBookmark(index);
-                      }}
-                      className={`p-1 h-auto ${bookmarkedItems.includes(index) ? 'text-yellow-400' : 'text-gray-400 hover:text-yellow-400'}`}
-                      title="收藏"
-                    >
-                      <Bookmark className="h-4 w-4" />
-                    </Button>
-                    
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                      }}
-                      className="text-gray-400 hover:text-white p-1 h-auto"
-                      title="打开原链接"
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Expandable Content */}
-              <div className="mt-3 pt-3 border-t border-gray-700/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="text-sm text-gray-300 line-clamp-2">
-                  <span className="text-gray-500">原文:</span> {point.originText}
-                </div>
-              </div>
+        {/* Load More */}
+        <div className="text-center py-8">
+          <div className="inline-flex flex-col items-center gap-4">
+            <div className="text-gray-400 text-sm">
+              显示 {filteredPainPoints.length} 个痛点，共 127 个
             </div>
-          </Card>
-        ))}
-      </div>
-
-      {/* Load More */}
-      <div className="text-center py-8">
-        <div className="inline-flex flex-col items-center gap-4">
-          <div className="text-gray-400 text-sm">
-            显示 {filteredPainPoints.length} 个痛点，共 127 个
+            <Button 
+              variant="outline" 
+              className="glass-effect border-gray-600 text-gray-300 hover:border-purple-500 hover:text-purple-300"
+            >
+              加载更多痛点
+            </Button>
           </div>
-          <Button 
-            variant="outline" 
-            className="glass-effect border-gray-600 text-gray-300 hover:border-purple-500 hover:text-purple-300"
-          >
-            加载更多痛点
-          </Button>
         </div>
       </div>
-    </div>
+    </TooltipProvider>
   );
 };
 

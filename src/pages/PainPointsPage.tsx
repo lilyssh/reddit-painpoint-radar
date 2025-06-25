@@ -11,6 +11,7 @@ import PainPointsList from "@/components/PainPointsList";
 import PainPointsListView from "@/components/PainPointsListView";
 import SortingFilters from "@/components/SortingFilters";
 import SearchDropdown from "@/components/SearchDropdown";
+import { Toaster } from "@/components/ui/toaster";
 
 const PainPointsPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -128,6 +129,8 @@ const PainPointsPage = () => {
           </div>
         </div>
       </div>
+      
+      <Toaster />
     </div>
   );
 };

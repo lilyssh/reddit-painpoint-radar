@@ -46,19 +46,19 @@ const SearchDropdown = ({ searchTerm, setSearchTerm }: SearchDropdownProps) => {
 
   return (
     <div className="relative" ref={inputRef}>
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+      <div className="relative search-glow">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 z-10" />
         <Input
           placeholder="搜索痛点、标签、社区..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onFocus={() => setIsOpen(true)}
-          className="pl-10 w-80 bg-slate-700 border-gray-600 text-white placeholder-gray-400 focus:border-purple-500"
+          className="pl-10 w-80 bg-slate-700 border-gray-600 text-white placeholder-gray-400 focus:border-purple-500 transition-all duration-300"
         />
       </div>
 
       {isOpen && (
-        <Card className="absolute top-full left-0 right-0 mt-2 bg-slate-800 border-gray-700 z-50 max-h-80 overflow-y-auto">
+        <Card className="absolute top-full left-0 right-0 mt-2 bg-slate-800 border-gray-700 z-50 max-h-80 overflow-y-auto glass-effect">
           <div className="p-4 space-y-4">
             {/* 最近搜索 */}
             {recentSearches.length > 0 && (
@@ -99,7 +99,7 @@ const SearchDropdown = ({ searchTerm, setSearchTerm }: SearchDropdownProps) => {
                   <Badge
                     key={index}
                     variant="outline"
-                    className="text-xs border-gray-600 text-gray-300 hover:border-purple-500 hover:text-purple-300 cursor-pointer transition-all"
+                    className="text-xs border-gray-600 text-gray-300 hover:border-purple-500 hover:text-purple-300 cursor-pointer transition-all hover:scale-105"
                     onClick={() => handleSearch(topic)}
                   >
                     {topic}
