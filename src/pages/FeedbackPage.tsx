@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -17,6 +16,7 @@ const FeedbackPage = () => {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const [historySearch, setHistorySearch] = useState("");
 
   const feedbackData = [
     {
@@ -128,14 +128,16 @@ const FeedbackPage = () => {
                   产品反馈 & 建议
                 </h1>
               </div>
-              <div className="text-sm text-yellow-300">
-                每条被采纳的反馈都能获得 <span className="font-semibold">1个月免费会员</span> 奖励
+              <div className="text-sm text-blue-300">
+                每条被采纳的反馈都能获得 
+                <span className="text-2xl font-extrabold bg-gradient-to-r from-green-400 via-blue-500 to-green-500 bg-clip-text text-transparent animate-pulse drop-shadow-lg px-2 rounded">
+                  1个月免费会员奖励
+                </span> 
               </div>
             </div>
             
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border border-yellow-500/20 bg-yellow-500/10 backdrop-blur-sm text-yellow-300">
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border border-yellow-500/20 bg-yellow-500/10 backdrop-blur-sm text-green-300">
               <Trophy className="h-4 w-4" />
-              反馈奖励计划
               <div className="flex items-center gap-4 ml-4 text-xs">
                 <div className="flex items-center gap-1">
                   <Star className="h-3 w-3" />
@@ -157,29 +159,6 @@ const FeedbackPage = () => {
 
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-6 py-6">
-        {/* 奖励规则 - 左上角 */}
-        <div className="mb-6">
-          <Card className="bg-gradient-to-br from-yellow-900/20 to-orange-900/20 border-yellow-500/30 w-fit">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-yellow-300 flex items-center gap-2 text-sm">
-                <Trophy className="h-4 w-4" />
-                奖励规则
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <div className="space-y-1 text-xs text-gray-300">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="h-3 w-3 text-green-400 flex-shrink-0" />
-                  <span>每条被采纳的反馈奖励1个月会员</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="h-3 w-3 text-green-400 flex-shrink-0" />
-                  <span>任何建议都欢迎：功能、设计、Bug等</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
 
         <Tabs defaultValue="submit" className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-6 bg-slate-800 border-gray-700">
@@ -291,8 +270,31 @@ const FeedbackPage = () => {
           </TabsContent>
 
           <TabsContent value="history">
+            <div className="mb-4 flex justify-end">
+              <div className="relative w-80">
+                <div className="bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 rounded-lg p-[2px] animate-pulse">
+                  <div className="bg-slate-700 rounded-md h-full w-full flex items-center relative">
+                    <input
+                      type="text"
+                      placeholder="搜索反馈内容、作者、类别..."
+                      value={historySearch}
+                      onChange={e => setHistorySearch(e.target.value)}
+                      className="pl-10 w-full bg-transparent border-0 text-white placeholder-gray-400 focus:ring-0 focus:outline-none"
+                    />
+                    <svg className="absolute left-3 text-gray-400 h-4 w-4 z-10" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <circle cx="11" cy="11" r="8" />
+                      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div className="space-y-3">
-              {feedbackData.map((item) => (
+              {feedbackData.filter(item =>
+                item.content.includes(historySearch) ||
+                item.author.includes(historySearch) ||
+                item.category.includes(historySearch)
+              ).map((item) => (
                 <Card key={item.id} className="bg-slate-800/50 border-gray-700">
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between mb-3">
@@ -325,8 +327,14 @@ const FeedbackPage = () => {
                         </div>
                         {item.reward !== "待确认" && (
                           <div className="flex items-center gap-1">
-                            <Trophy className="h-3 w-3 text-yellow-400" />
-                            <span className="text-yellow-400">{item.reward}</span>
+                            <Trophy className="h-3 w-3 text-yellow-400 animate-bounce" />
+                            {item.reward === "1个月会员" ? (
+                              <span className="text-lg font-extrabold bg-gradient-to-r from-yellow-400 via-pink-500 to-blue-500 bg-clip-text text-transparent animate-pulse drop-shadow-lg px-1 rounded">
+                                {item.reward}
+                              </span>
+                            ) : (
+                              <span className="text-yellow-400">{item.reward}</span>
+                            )}
                           </div>
                         )}
                       </div>
