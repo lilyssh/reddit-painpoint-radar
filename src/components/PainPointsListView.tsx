@@ -644,39 +644,38 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                       </div>
                     </div>
 
-                    {/* User Interest Tags */}
-                    <div className="flex items-center gap-3 mb-4">
-                      <span className="text-xs text-gray-500">我的态度:</span>
-                      {(['want', 'wantToDo', 'done'] as const).map((tag) => {
-                        const isSelected = currentUserTags.includes(tag);
-                        const labels = { want: '想用', wantToDo: '想做', done: '做过' };
-                        const colors = { 
-                          want: isSelected ? 'bg-blue-500/20 text-blue-300 border-blue-500/50' : 'bg-gray-700/50 text-gray-400 border-gray-600',
-                          wantToDo: isSelected ? 'bg-orange-500/20 text-orange-300 border-orange-500/50' : 'bg-gray-700/50 text-gray-400 border-gray-600',
-                          done: isSelected ? 'bg-green-500/20 text-green-300 border-green-500/50' : 'bg-gray-700/50 text-gray-400 border-gray-600'
-                        };
-                        
-                        return (
-                          <Button
-                            key={tag}
-                            variant="outline"
-                            size="sm"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleTagClick(index, tag);
-                            }}
-                            className={`text-xs px-2 py-1 h-auto transition-all hover:scale-105 ${colors[tag]}`}
-                          >
-                            {labels[tag]} ({point.userCounts[tag] + (isSelected ? 1 : 0)})
-                          </Button>
-                        );
-                      })}
-                    </div>
-                    
-                    {/* Tool Operation Area - Separated with subtle line */}
-                    <div className="pt-3 border-t border-gray-700/20">
-                      {/* AI Assistant Buttons */}
-                      <div className="flex gap-2 mb-3">
+                    {/* User Interest Tags & AI Buttons */}
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <span className="text-xs text-gray-500">我的态度:</span>
+                        {(['want', 'wantToDo', 'done'] as const).map((tag) => {
+                          const isSelected = currentUserTags.includes(tag);
+                          const labels = { want: '想用', wantToDo: '想做', done: '做过' };
+                          const colors = { 
+                            want: isSelected ? 'bg-blue-500/20 text-blue-300 border-blue-500/50' : 'bg-gray-700/50 text-gray-400 border-gray-600',
+                            wantToDo: isSelected ? 'bg-orange-500/20 text-orange-300 border-orange-500/50' : 'bg-gray-700/50 text-gray-400 border-gray-600',
+                            done: isSelected ? 'bg-green-500/20 text-green-300 border-green-500/50' : 'bg-gray-700/50 text-gray-400 border-gray-600'
+                          };
+                          
+                          return (
+                            <Button
+                              key={tag}
+                              variant="outline"
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleTagClick(index, tag);
+                              }}
+                              className={`text-xs px-2 py-1 h-auto transition-all hover:scale-105 ${colors[tag]}`}
+                            >
+                              {labels[tag]} ({point.userCounts[tag] + (isSelected ? 1 : 0)})
+                            </Button>
+                          );
+                        })}
+                      </div>
+
+                      {/* AI Assistant Buttons - Moved to right side */}
+                      <div className="flex gap-2">
                         <Button 
                           variant="outline" 
                           size="sm"
@@ -691,20 +690,6 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                         >
                           📋 生成落地路线图
                         </Button>
-                      </div>
-
-                      {/* Social Proof */}
-                      <div className="flex items-center justify-between text-xs text-gray-400">
-                        <div className="flex items-center gap-4">
-                          <div className="flex items-center gap-1">
-                            <Eye className="h-3 w-3" />
-                            <span>已被验证 {point.verifications} 次</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Heart className="h-3 w-3" />
-                            <span>{point.bookmarks} 人收藏</span>
-                          </div>
-                        </div>
                       </div>
                     </div>
                   </div>
