@@ -35,6 +35,12 @@ const Header = () => {
               痛点探索
             </Link>
             <Link 
+              to="/feedback" 
+              className={`transition-colors ${isActive('/feedback') ? 'text-white' : 'text-gray-300 hover:text-white'}`}
+            >
+              反馈
+            </Link>
+            <Link 
               to="/dashboard" 
               className={`transition-colors ${isActive('/dashboard') ? 'text-white' : 'text-gray-300 hover:text-white'}`}
             >
@@ -77,6 +83,13 @@ const Header = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 痛点探索
+              </Link>
+              <Link 
+                to="/feedback" 
+                className={`transition-colors ${isActive('/feedback') ? 'text-white' : 'text-gray-300 hover:text-white'}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                反馈
               </Link>
               <Link 
                 to="/dashboard" 

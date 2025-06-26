@@ -3,7 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { ExternalLink, MessageCircle, TrendingUp, Clock, Users, Star, Bookmark, BarChart3, CheckCircle, Heart, Eye } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { ExternalLink, MessageCircle, TrendingUp, Clock, Users, Star, Bookmark, BarChart3, CheckCircle, Heart, Eye, Share, ThumbsUp } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface PainPointsListViewProps {
@@ -14,7 +15,12 @@ interface PainPointsListViewProps {
 
 const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPointsListViewProps) => {
   const [bookmarkedItems, setBookmarkedItems] = useState<number[]>([]);
+  const [likedItems, setLikedItems] = useState<number[]>([]);
   const [loadingItems, setLoadingItems] = useState<number[]>([]);
+  const [userRatings, setUserRatings] = useState<{ [key: number]: number }>({});
+  const [userTags, setUserTags] = useState<{ [key: number]: string[] }>({});
+  const [showUsersDialog, setShowUsersDialog] = useState(false);
+  const [selectedTagUsers, setSelectedTagUsers] = useState<any[]>([]);
   const { toast } = useToast();
 
   const painPointsData = [
@@ -32,7 +38,11 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       marketSize: "中等",
       trendData: [20, 25, 30, 45, 60, 80, 95],
       verifications: 23,
-      bookmarks: 156
+      bookmarks: 156,
+      avgRating: 4.2,
+      likes: 89,
+      shares: 23,
+      userCounts: { want: 145, wantToDo: 67, done: 12 }
     },
     {
       title: "多平台内容发布要重复操作",
@@ -179,6 +189,89 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
     console.log("查看痛点详情:", point.title);
   };
 
+  const handleRating = (pointIndex: number, rating: number) => {
+    setUserRatings(prev => ({
+      ...prev,
+      [pointIndex]: rating
+    }));
+    
+    toast({
+      title: "评价成功",
+      description: `已为该痛点评${rating}星`,
+      duration: 2000,
+    });
+  };
+
+  const handleTagClick = (pointIndex: number, tag: 'want' | 'wantToDo' | 'done') => {
+    const currentTags = userTags[pointIndex] || [];
+    const isSelected = currentTags.includes(tag);
+    
+    setUserTags(prev => ({
+      ...prev,
+      [pointIndex]: isSelected 
+        ? currentTags.filter(t => t !== tag)
+        : [...currentTags.filter(t => t !== tag), tag]
+    }));
+
+    if (tag === 'done' && !isSelected) {
+      // 模拟显示做过的人的信息
+      setSelectedTagUsers([
+        { name: "张三", website: "https://example1.com", avatar: "ZS" },
+        { name: "李四", website: "https://example2.com", avatar: "LS" },
+        { name: "王五", website: "https://example3.com", avatar: "WW" }
+      ]);
+      setShowUsersDialog(true);
+    }
+
+    toast({
+      title: isSelected ? "已取消标记" : "标记成功",
+      description: `已${isSelected ? '取消' : ''}标记为"${
+        tag === 'want' ? '想用' : tag === 'wantToDo' ? '想做' : '做过'
+      }"`,
+      duration: 2000,
+    });
+  };
+
+  const handleLike = (index: number) => {
+    const isLiked = likedItems.includes(index);
+    
+    setLikedItems(prev => 
+      isLiked
+        ? prev.filter(id => id !== index)
+        : [...prev, index]
+    );
+
+    toast({
+      title: isLiked ? "取消点赞" : "点赞成功",
+      description: isLiked ? "已取消点赞" : "感谢你的点赞！",
+      duration: 2000,
+    });
+  };
+
+  const handleShare = (point: any) => {
+    navigator.clipboard.writeText(`${point.title} - 发现于 RPP Radar`);
+    toast({
+      title: "链接已复制",
+      description: "痛点链接已复制到剪贴板",
+      duration: 2000,
+    });
+  };
+
+  const StarRating = ({ rating, onRate, readonly = false }: { rating: number; onRate?: (rating: number) => void; readonly?: boolean }) => (
+    <div className="flex items-center gap-1">
+      {[1, 2, 3, 4, 5].map((star) => (
+        <Star
+          key={star}
+          className={`h-4 w-4 ${
+            star <= rating ? 'text-yellow-400 fill-current' : 'text-gray-400'
+          } ${!readonly ? 'cursor-pointer hover:text-yellow-300' : ''} transition-colors`}
+          onClick={() => !readonly && onRate?.(star)}
+        />
+      ))}
+      {readonly && <span className="text-xs text-gray-400 ml-1">({rating.toFixed(1)})</span>}
+    </div>
+  );
+
   const TrendSparkline = ({ data }: { data: number[] }) => (
     <div className="flex items-end gap-0.5 h-6">
       {data.map((value, i) => (
@@ -214,6 +307,8 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
           {filteredPainPoints.map((point, index) => {
             const severity = getSeverityDisplay(point.severity);
             const isLoading = loadingItems.includes(index);
+            const userRating = userRatings[index] || 0;
+            const currentUserTags = userTags[index] || [];
             
             return (
               <Card 
@@ -415,6 +510,148 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                       <span className="text-gray-500">原文:</span> {point.originText}
                     </div>
                     
+                    {/* Social Actions & Rating */}
+                    <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-700/20">
+                      <div className="flex items-center gap-4">
+                        {/* Star Rating */}
+                        <div className="flex items-center gap-2">
+                          <StarRating rating={point.avgRating} readonly />
+                          <span className="text-xs text-gray-400">平均评分</span>
+                        </div>
+                        
+                        {/* User Rating */}
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-gray-400">我的评分:</span>
+                          <StarRating 
+                            rating={userRating} 
+                            onRate={(rating) => handleRating(index, rating)} 
+                          />
+                        </div>
+                      </div>
+
+                      {/* Social Actions */}
+                      <div className="flex items-center gap-2">
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleLike(index);
+                              }}
+                              className={`p-2 h-auto hover:scale-110 transition-all ${
+                                likedItems.includes(index) 
+                                  ? 'text-red-400' 
+                                  : 'text-gray-400 hover:text-red-400'
+                              }`}
+                            >
+                              <ThumbsUp className="h-4 w-4" />
+                              <span className="text-xs ml-1">{point.likes + (likedItems.includes(index) ? 1 : 0)}</span>
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{likedItems.includes(index) ? '取消点赞' : '点赞'}</p>
+                          </TooltipContent>
+                        </Tooltip>
+
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                              }}
+                              className="text-gray-400 hover:text-blue-400 p-2 h-auto hover:scale-110 transition-all"
+                            >
+                              <MessageCircle className="h-4 w-4" />
+                              <span className="text-xs ml-1">{point.comments}</span>
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>查看评论</p>
+                          </TooltipContent>
+                        </Tooltip>
+
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleShare(point);
+                              }}
+                              className="text-gray-400 hover:text-green-400 p-2 h-auto hover:scale-110 transition-all"
+                            >
+                              <Share className="h-4 w-4" />
+                              <span className="text-xs ml-1">{point.shares}</span>
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>分享痛点</p>
+                          </TooltipContent>
+                        </Tooltip>
+
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleBookmark(index);
+                              }}
+                              className={`p-2 h-auto hover:scale-110 transition-all ${
+                                bookmarkedItems.includes(index) 
+                                  ? 'text-yellow-400' 
+                                  : 'text-gray-400 hover:text-yellow-400'
+                              }`}
+                            >
+                              {bookmarkedItems.includes(index) ? (
+                                <CheckCircle className="h-4 w-4" />
+                              ) : (
+                                <Bookmark className="h-4 w-4" />
+                              )}
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{bookmarkedItems.includes(index) ? '取消收藏' : '收藏痛点'}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </div>
+                    </div>
+
+                    {/* User Interest Tags */}
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="text-xs text-gray-500">我的态度:</span>
+                      {(['want', 'wantToDo', 'done'] as const).map((tag) => {
+                        const isSelected = currentUserTags.includes(tag);
+                        const labels = { want: '想用', wantToDo: '想做', done: '做过' };
+                        const colors = { 
+                          want: isSelected ? 'bg-blue-500/20 text-blue-300 border-blue-500/50' : 'bg-gray-700/50 text-gray-400 border-gray-600',
+                          wantToDo: isSelected ? 'bg-orange-500/20 text-orange-300 border-orange-500/50' : 'bg-gray-700/50 text-gray-400 border-gray-600',
+                          done: isSelected ? 'bg-green-500/20 text-green-300 border-green-500/50' : 'bg-gray-700/50 text-gray-400 border-gray-600'
+                        };
+                        
+                        return (
+                          <Button
+                            key={tag}
+                            variant="outline"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleTagClick(index, tag);
+                            }}
+                            className={`text-xs px-2 py-1 h-auto transition-all hover:scale-105 ${colors[tag]}`}
+                          >
+                            {labels[tag]} ({point.userCounts[tag] + (isSelected ? 1 : 0)})
+                          </Button>
+                        );
+                      })}
+                    </div>
+                    
                     {/* Tool Operation Area - Separated with subtle line */}
                     <div className="pt-3 border-t border-gray-700/20">
                       {/* AI Assistant Buttons */}
@@ -471,6 +708,36 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
           </div>
         </div>
       </div>
+
+      {/* Users Dialog */}
+      <Dialog open={showUsersDialog} onOpenChange={setShowUsersDialog}>
+        <DialogContent className="bg-slate-900 border-gray-700">
+          <DialogHeader>
+            <DialogTitle className="text-white">做过的用户</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3">
+            {selectedTagUsers.map((user, index) => (
+              <div key={index} className="flex items-center justify-between p-3 bg-slate-800 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
+                    <span className="text-white text-sm font-semibold">{user.avatar}</span>
+                  </div>
+                  <span className="text-white">{user.name}</span>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => window.open(user.website, '_blank')}
+                  className="text-purple-300 border-purple-500/50 hover:bg-purple-500/10"
+                >
+                  <ExternalLink className="h-4 w-4 mr-1" />
+                  访问
+                </Button>
+              </div>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
     </TooltipProvider>
   );
 };
