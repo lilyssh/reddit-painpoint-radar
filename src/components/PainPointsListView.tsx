@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { ExternalLink, MessageCircle, TrendingUp, Clock, Users, Star, Bookmark, BarChart3, CheckCircle, Heart, Eye, Share, ThumbsUp } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -58,7 +59,11 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       marketSize: "大型",
       trendData: [15, 20, 25, 35, 50, 70, 85],
       verifications: 45,
-      bookmarks: 234
+      bookmarks: 234,
+      avgRating: 3.8,
+      likes: 76,
+      shares: 18,
+      userCounts: { want: 198, wantToDo: 89, done: 23 }
     },
     {
       title: "团队协作工具数据不同步",
@@ -74,7 +79,11 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       marketSize: "大型",
       trendData: [10, 15, 20, 25, 30, 40, 50],
       verifications: 12,
-      bookmarks: 78
+      bookmarks: 78,
+      avgRating: 3.5,
+      likes: 45,
+      shares: 12,
+      userCounts: { want: 87, wantToDo: 34, done: 8 }
     },
     {
       title: "视频会议中背景噪音干扰",
@@ -90,7 +99,11 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       marketSize: "中等",
       trendData: [30, 40, 55, 70, 85, 90, 95],
       verifications: 67,
-      bookmarks: 345
+      bookmarks: 345,
+      avgRating: 4.1,
+      likes: 134,
+      shares: 28,
+      userCounts: { want: 234, wantToDo: 98, done: 15 }
     },
     {
       title: "电商平台库存管理混乱",
@@ -106,7 +119,11 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       marketSize: "大型",
       trendData: [40, 50, 65, 80, 90, 95, 98],
       verifications: 89,
-      bookmarks: 456
+      bookmarks: 456,
+      avgRating: 4.5,
+      likes: 167,
+      shares: 31,
+      userCounts: { want: 345, wantToDo: 123, done: 45 }
     },
     {
       title: "代码审查流程效率低下",
@@ -122,7 +139,11 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       marketSize: "中等",
       trendData: [5, 8, 12, 18, 25, 30, 35],
       verifications: 34,
-      bookmarks: 123
+      bookmarks: 123,
+      avgRating: 3.2,
+      likes: 56,
+      shares: 14,
+      userCounts: { want: 67, wantToDo: 45, done: 12 }
     }
   ];
 
@@ -719,9 +740,11 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
             {selectedTagUsers.map((user, index) => (
               <div key={index} className="flex items-center justify-between p-3 bg-slate-800 rounded-lg">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
-                    <span className="text-white text-sm font-semibold">{user.avatar}</span>
-                  </div>
+                  <Avatar>
+                    <AvatarFallback className="bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold">
+                      {user.avatar}
+                    </AvatarFallback>
+                  </Avatar>
                   <span className="text-white">{user.name}</span>
                 </div>
                 <Button

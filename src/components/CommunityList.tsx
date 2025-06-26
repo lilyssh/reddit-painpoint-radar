@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Clock, Users, TrendingUp, MoreHorizontal } from "lucide-react";
+import { Search, Clock, Users, TrendingUp, MoreHorizontal, Globe, Zap, Cpu, MessageSquare, Briefcase, ShoppingCart, Code, Palette, Music, Gamepad2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 interface CommunityListProps {
@@ -18,6 +18,27 @@ const CommunityList = ({ selectedCommunity, onSelectCommunity, searchTerm }: Com
   const [recentlyVisited, setRecentlyVisited] = useState([
     "SaaS", "Startups 初创公司", "Technology 科技"
   ]);
+
+  // 获取社区图标
+  const getCommunityIcon = (communityName: string) => {
+    const iconMap: { [key: string]: any } = {
+      "全部社区": Globe,
+      "SaaS": Zap,
+      "Startups 初创公司": Briefcase,
+      "Technology 科技": Cpu,
+      "ChatGPT": MessageSquare,
+      "Entrepreneur 创业": Briefcase,
+      "ProductHunt": TrendingUp,
+      "MachineLearning": Cpu,
+      "WebDev": Code,
+      "Marketing": Palette,
+      "Music": Music,
+      "Gaming": Gamepad2,
+      "E-commerce": ShoppingCart
+    };
+    
+    return iconMap[communityName] || Globe;
+  };
 
   const communities = [
     { name: "全部社区", count: 127, trending: false },
@@ -69,24 +90,30 @@ const CommunityList = ({ selectedCommunity, onSelectCommunity, searchTerm }: Com
             <span>最近访问</span>
           </div>
           <div className="space-y-1">
-            {recentlyVisited.map((community, index) => (
-              <Button
-                key={index}
-                variant="ghost"
-                size="sm"
-                onClick={() => handleCommunitySelect(community)}
-                className={`w-full justify-start text-left p-2 h-auto text-sm transition-all duration-200 ${
-                  selectedCommunity === community
-                    ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
-                    : 'text-gray-300 hover:bg-slate-700 hover:text-white'
-                }`}
-              >
-                <div className="flex items-center justify-between w-full">
-                  <span className="truncate">{community}</span>
-                  <Users className="h-3 w-3 text-gray-500 flex-shrink-0 ml-2" />
-                </div>
-              </Button>
-            ))}
+            {recentlyVisited.map((community, index) => {
+              const IconComponent = getCommunityIcon(community);
+              return (
+                <Button
+                  key={index}
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleCommunitySelect(community)}
+                  className={`w-full justify-start text-left p-2 h-auto text-sm transition-all duration-200 ${
+                    selectedCommunity === community
+                      ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
+                      : 'text-gray-300 hover:bg-slate-700 hover:text-white'
+                  }`}
+                >
+                  <div className="flex items-center justify-between w-full">
+                    <div className="flex items-center gap-2">
+                      <IconComponent className="h-4 w-4 flex-shrink-0" />
+                      <span className="truncate">{community}</span>
+                    </div>
+                    <Users className="h-3 w-3 text-gray-500 flex-shrink-0 ml-2" />
+                  </div>
+                </Button>
+              );
+            })}
           </div>
           
           {/* Separator */}
@@ -96,38 +123,42 @@ const CommunityList = ({ selectedCommunity, onSelectCommunity, searchTerm }: Com
       
       {/* Community List */}
       <div className="space-y-1">
-        {filteredCommunities.map((community, index) => (
-          <Button
-            key={index}
-            variant="ghost"
-            size="sm"
-            onClick={() => handleCommunitySelect(community.name)}
-            className={`w-full justify-start text-left p-3 h-auto transition-all duration-200 group ${
-              selectedCommunity === community.name
-                ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
-                : 'text-gray-300 hover:bg-slate-700 hover:text-white'
-            }`}
-          >
-            <div className="flex items-center justify-between w-full">
-              <div className="flex items-center gap-2 flex-1 min-w-0">
-                <span className="truncate text-sm">{community.name}</span>
-                {community.trending && (
-                  <TrendingUp className="h-3 w-3 text-green-400 flex-shrink-0" />
-                )}
+        {filteredCommunities.map((community, index) => {
+          const IconComponent = getCommunityIcon(community.name);
+          return (
+            <Button
+              key={index}
+              variant="ghost"
+              size="sm"
+              onClick={() => handleCommunitySelect(community.name)}
+              className={`w-full justify-start text-left p-3 h-auto transition-all duration-200 group ${
+                selectedCommunity === community.name
+                  ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
+                  : 'text-gray-300 hover:bg-slate-700 hover:text-white'
+              }`}
+            >
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center gap-2 flex-1 min-w-0">
+                  <IconComponent className="h-4 w-4 flex-shrink-0" />
+                  <span className="truncate text-sm">{community.name}</span>
+                  {community.trending && (
+                    <TrendingUp className="h-3 w-3 text-green-400 flex-shrink-0" />
+                  )}
+                </div>
+                <Badge 
+                  variant="outline" 
+                  className={`text-xs flex-shrink-0 ml-2 ${
+                    selectedCommunity === community.name
+                      ? 'border-purple-400 text-purple-300'
+                      : 'border-gray-600 text-gray-400 group-hover:border-gray-500'
+                  }`}
+                >
+                  {community.count}
+                </Badge>
               </div>
-              <Badge 
-                variant="outline" 
-                className={`text-xs flex-shrink-0 ml-2 ${
-                  selectedCommunity === community.name
-                    ? 'border-purple-400 text-purple-300'
-                    : 'border-gray-600 text-gray-400 group-hover:border-gray-500'
-                }`}
-              >
-                {community.count}
-              </Badge>
-            </div>
-          </Button>
-        ))}
+            </Button>
+          );
+        })}
         
         {/* More Communities Indicator */}
         <div className="pt-3 border-t border-gray-700/30 mt-4">
