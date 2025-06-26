@@ -1,16 +1,16 @@
+
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, Filter, TrendingUp, Clock, Flame, Users, ExternalLink, Grid3X3, List, BookmarkPlus, Share, Eye } from "lucide-react";
+import { Search, Filter, TrendingUp, Clock, Flame, Users, ExternalLink, Grid3X3, List, BookmarkPlus, Share, Eye, Heart } from "lucide-react";
 import Header from "@/components/Header";
 import CommunityList from "@/components/CommunityList";
 import PainPointsList from "@/components/PainPointsList";
 import PainPointsListView from "@/components/PainPointsListView";
 import SortingFilters from "@/components/SortingFilters";
-import SearchDropdown from "@/components/SearchDropdown";
 import { Toaster } from "@/components/ui/toaster";
 
 const PainPointsPage = () => {
@@ -34,7 +34,20 @@ const PainPointsPage = () => {
               </h1>
             </div>
             <div className="flex items-center gap-4 w-auto">
-              <SearchDropdown searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+              {/* 流光边框搜索框 */}
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 rounded-lg p-[2px] animate-pulse">
+                  <div className="bg-slate-700 rounded-md h-full w-full flex items-center">
+                    <Search className="absolute left-3 text-gray-400 h-4 w-4 z-10" />
+                    <Input
+                      placeholder="搜索痛点、标签、社区..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10 w-80 bg-transparent border-0 text-white placeholder-gray-400 focus:ring-0 focus:outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
               <SortingFilters sortBy={sortBy} setSortBy={setSortBy} />
             </div>
           </div>
@@ -60,39 +73,16 @@ const PainPointsPage = () => {
                 <h2 className="text-xl font-semibold text-white mb-2">
                   发现了 <span className="text-purple-400">127</span> 个痛点
                 </h2>
-                <div className="flex items-center gap-4 text-sm text-gray-400">
-                  <div className="flex items-center gap-1">
-                    <TrendingUp className="h-4 w-4" />
-                    <span>热度上升中</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Clock className="h-4 w-4" />
-                    <span>最近更新: 2小时前</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Eye className="h-4 w-4" />
-                    <span>本周新增: 23个</span>
-                  </div>
-                </div>
               </div>
               
               <div className="flex items-center gap-3">
                 <Button
                   variant="outline"
                   size="sm"
-                  className="glass-effect border-gray-600 text-gray-300 hover:border-green-500 hover:text-green-300"
+                  className="glass-effect border-gray-600 text-gray-300 hover:border-pink-500 hover:text-pink-300"
                 >
-                  <BookmarkPlus className="h-4 w-4 mr-2" />
-                  保存筛选
-                </Button>
-                
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="glass-effect border-gray-600 text-gray-300 hover:border-blue-500 hover:text-blue-300"
-                >
-                  <Share className="h-4 w-4 mr-2" />
-                  分享
+                  <Heart className="h-4 w-4 mr-2" />
+                  我的收藏
                 </Button>
                 
                 <Tabs value={viewMode} onValueChange={setViewMode} className="w-auto">

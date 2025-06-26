@@ -35,18 +35,18 @@ const Header = () => {
               痛点探索
             </Link>
             <Link 
-              to="/feedback" 
-              className={`transition-colors ${isActive('/feedback') ? 'text-white' : 'text-gray-300 hover:text-white'}`}
-            >
-              反馈
-            </Link>
-            <Link 
               to="/dashboard" 
               className={`transition-colors ${isActive('/dashboard') ? 'text-white' : 'text-gray-300 hover:text-white'}`}
             >
               数据分析
             </Link>
             <a href="#pricing" className="text-gray-300 hover:text-white transition-colors">价格</a>
+            <Link 
+              to="/feedback" 
+              className={`transition-colors ${isActive('/feedback') ? 'text-white' : 'text-gray-300 hover:text-white'}`}
+            >
+              反馈
+            </Link>
           </nav>
 
           {/* CTA Button */}
@@ -85,13 +85,6 @@ const Header = () => {
                 痛点探索
               </Link>
               <Link 
-                to="/feedback" 
-                className={`transition-colors ${isActive('/feedback') ? 'text-white' : 'text-gray-300 hover:text-white'}`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                反馈
-              </Link>
-              <Link 
                 to="/dashboard" 
                 className={`transition-colors ${isActive('/dashboard') ? 'text-white' : 'text-gray-300 hover:text-white'}`}
                 onClick={() => setIsMenuOpen(false)}
@@ -99,6 +92,13 @@ const Header = () => {
                 数据分析
               </Link>
               <a href="#pricing" className="text-gray-300 hover:text-white transition-colors">价格</a>
+              <Link 
+                to="/feedback" 
+                className={`transition-colors ${isActive('/feedback') ? 'text-white' : 'text-gray-300 hover:text-white'}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                反馈
+              </Link>
               <div className="flex flex-col space-y-2 pt-4">
                 <Button variant="ghost" className="text-gray-300 hover:text-white">登录</Button>
                 <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0">

@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { ExternalLink, MessageCircle, TrendingUp, Clock, Users, Star, Bookmark, BarChart3, CheckCircle, Heart, Eye, Share, ThumbsUp } from "lucide-react";
+import { ExternalLink, MessageCircle, TrendingUp, Clock, Users, Star, Bookmark, BarChart3, CheckCircle, Heart, Eye, ThumbsUp } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface PainPointsListViewProps {
@@ -41,6 +41,7 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       verifications: 23,
       bookmarks: 156,
       avgRating: 4.2,
+      ratingCount: 84,
       likes: 89,
       shares: 23,
       userCounts: { want: 145, wantToDo: 67, done: 12 }
@@ -61,6 +62,7 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       verifications: 45,
       bookmarks: 234,
       avgRating: 3.8,
+      ratingCount: 156,
       likes: 76,
       shares: 18,
       userCounts: { want: 198, wantToDo: 89, done: 23 }
@@ -81,6 +83,7 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       verifications: 12,
       bookmarks: 78,
       avgRating: 3.5,
+      ratingCount: 92,
       likes: 45,
       shares: 12,
       userCounts: { want: 87, wantToDo: 34, done: 8 }
@@ -101,6 +104,7 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       verifications: 67,
       bookmarks: 345,
       avgRating: 4.1,
+      ratingCount: 203,
       likes: 134,
       shares: 28,
       userCounts: { want: 234, wantToDo: 98, done: 15 }
@@ -121,6 +125,7 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       verifications: 89,
       bookmarks: 456,
       avgRating: 4.5,
+      ratingCount: 178,
       likes: 167,
       shares: 31,
       userCounts: { want: 345, wantToDo: 123, done: 45 }
@@ -141,6 +146,7 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
       verifications: 34,
       bookmarks: 123,
       avgRating: 3.2,
+      ratingCount: 67,
       likes: 56,
       shares: 14,
       userCounts: { want: 67, wantToDo: 45, done: 12 }
@@ -269,15 +275,6 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
     });
   };
 
-  const handleShare = (point: any) => {
-    navigator.clipboard.writeText(`${point.title} - 发现于 RPP Radar`);
-    toast({
-      title: "链接已复制",
-      description: "痛点链接已复制到剪贴板",
-      duration: 2000,
-    });
-  };
-
   const StarRating = ({ rating, onRate, readonly = false }: { rating: number; onRate?: (rating: number) => void; readonly?: boolean }) => (
     <div className="flex items-center gap-1">
       {[1, 2, 3, 4, 5].map((star) => (
@@ -317,14 +314,13 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
               <div className="col-span-2">商机评估</div>
               <div className="col-span-1">热度趋势</div>
               <div className="col-span-1">社区</div>
-              <div className="col-span-1">日期</div>
-              <div className="col-span-1">操作</div>
+              <div className="col-span-2">日期</div>
             </div>
           </div>
         </Card>
 
         {/* List Items */}
-        <div className="space-y-2">
+        <div className="space-y-3">
           {filteredPainPoints.map((point, index) => {
             const severity = getSeverityDisplay(point.severity);
             const isLoading = loadingItems.includes(index);
@@ -334,22 +330,15 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
             return (
               <Card 
                 key={index} 
-                className="bg-slate-800/30 border-gray-700 hover:bg-slate-800/50 transition-all duration-300 group cursor-pointer relative overflow-hidden glow-border-card"
+                className="bg-slate-800/30 border border-gray-600/50 hover:bg-slate-800/50 transition-all duration-300 group cursor-pointer relative overflow-hidden shadow-lg hover:shadow-xl hover:shadow-purple-500/10"
                 onClick={() => handleRowClick(point)}
               >
-                {/* Date Badge - Top Right Corner */}
-                <div className="absolute top-2 right-2 z-10">
-                  <Badge variant="outline" className="text-xs border-gray-600 text-gray-400 bg-slate-800/80 backdrop-blur">
-                    {point.date}
-                  </Badge>
-                </div>
-
                 {/* Loading Shimmer Overlay */}
                 {isLoading && (
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/10 to-transparent animate-shimmer z-20" />
                 )}
 
-                <div className="p-3">
+                <div className="p-4">
                   <div className="grid grid-cols-12 gap-4 items-center">
                     {/* Title & Tags */}
                     <div className="col-span-4">
@@ -449,79 +438,11 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                       </Tooltip>
                     </div>
 
-                    {/* Date - Hidden (moved to top right) */}
-                    <div className="col-span-1">
-                      {/* Empty space where date was */}
-                    </div>
-
-                    {/* Actions */}
-                    <div className="col-span-1">
-                      <div className="flex items-center gap-1">
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleAnalyze(point, index);
-                              }}
-                              disabled={isLoading}
-                              className="text-blue-400 hover:text-blue-300 p-1 h-auto hover:scale-110 transition-all"
-                            >
-                              <BarChart3 className={`h-4 w-4 ${isLoading ? 'animate-pulse' : ''}`} />
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>AI智能分析</p>
-                          </TooltipContent>
-                        </Tooltip>
-                        
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleBookmark(index);
-                              }}
-                              className={`p-1 h-auto hover:scale-110 transition-all ${
-                                bookmarkedItems.includes(index) 
-                                  ? 'text-yellow-400' 
-                                  : 'text-gray-400 hover:text-yellow-400'
-                              }`}
-                            >
-                              {bookmarkedItems.includes(index) ? (
-                                <CheckCircle className="h-4 w-4" />
-                              ) : (
-                                <Bookmark className="h-4 w-4" />
-                              )}
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>{bookmarkedItems.includes(index) ? '取消收藏' : '收藏痛点'}</p>
-                          </TooltipContent>
-                        </Tooltip>
-                        
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                              }}
-                              className="text-gray-400 hover:text-white p-1 h-auto hover:scale-110 transition-all"
-                            >
-                              <ExternalLink className="h-4 w-4" />
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>打开原链接</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </div>
+                    {/* Date */}
+                    <div className="col-span-2">
+                      <Badge variant="outline" className="text-xs border-gray-600 text-gray-400 bg-slate-800/80 backdrop-blur">
+                        {point.date}
+                      </Badge>
                     </div>
                   </div>
 
@@ -537,7 +458,7 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                         {/* Star Rating */}
                         <div className="flex items-center gap-2">
                           <StarRating rating={point.avgRating} readonly />
-                          <span className="text-xs text-gray-400">平均评分</span>
+                          <span className="text-xs text-gray-400">平均评分 ({point.ratingCount})</span>
                         </div>
                         
                         {/* User Rating */}
@@ -592,26 +513,6 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                           </TooltipTrigger>
                           <TooltipContent>
                             <p>查看评论</p>
-                          </TooltipContent>
-                        </Tooltip>
-
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleShare(point);
-                              }}
-                              className="text-gray-400 hover:text-green-400 p-2 h-auto hover:scale-110 transition-all"
-                            >
-                              <Share className="h-4 w-4" />
-                              <span className="text-xs ml-1">{point.shares}</span>
-                            </Button>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>分享痛点</p>
                           </TooltipContent>
                         </Tooltip>
 

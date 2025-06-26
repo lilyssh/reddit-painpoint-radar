@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Trophy, Star, Clock, CheckCircle, AlertCircle, Lightbulb, Bug, Palette, Settings } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";
@@ -118,31 +119,36 @@ const FeedbackPage = () => {
       <Header />
       
       {/* Page Header */}
-      <div className="border-b border-gray-700 bg-slate-800/50 backdrop-blur-sm sticky top-16 z-40 mt-16">
-        <div className="max-w-6xl mx-auto px-6 py-8">
-          <div className="text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border border-yellow-500/20 bg-yellow-500/10 backdrop-blur-sm text-yellow-300 mb-6">
+      <div className="border-b border-gray-700 bg-slate-800/50 backdrop-blur-sm mt-16">
+        <div className="max-w-6xl mx-auto px-6 py-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-8">
+              <div>
+                <h1 className="text-3xl font-bold text-white mb-2">
+                  产品反馈 & 建议
+                </h1>
+              </div>
+              <div className="text-sm text-yellow-300">
+                每条被采纳的反馈都能获得 <span className="font-semibold">1个月免费会员</span> 奖励
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border border-yellow-500/20 bg-yellow-500/10 backdrop-blur-sm text-yellow-300">
               <Trophy className="h-4 w-4" />
               反馈奖励计划
-            </div>
-            <h1 className="text-4xl font-bold text-white mb-4">
-              产品反馈 & 建议
-            </h1>
-            <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-6">
-              每条被采纳的反馈都能获得 <span className="text-yellow-400 font-semibold">1个月免费会员</span> 奖励
-            </p>
-            <div className="flex items-center justify-center gap-8 text-sm text-gray-400">
-              <div className="flex items-center gap-2">
-                <Star className="h-4 w-4 text-yellow-400" />
-                <span>先提交先得</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-400" />
-                <span>重复不奖励</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-blue-400" />
-                <span>7天内反馈</span>
+              <div className="flex items-center gap-4 ml-4 text-xs">
+                <div className="flex items-center gap-1">
+                  <Star className="h-3 w-3" />
+                  先提交先得
+                </div>
+                <div className="flex items-center gap-1">
+                  <CheckCircle className="h-3 w-3" />
+                  重复不奖励
+                </div>
+                <div className="flex items-center gap-1">
+                  <Clock className="h-3 w-3" />
+                  7天内反馈
+                </div>
               </div>
             </div>
           </div>
@@ -150,9 +156,33 @@ const FeedbackPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-6 py-12">
+      <div className="max-w-6xl mx-auto px-6 py-6">
+        {/* 奖励规则 - 左上角 */}
+        <div className="mb-6">
+          <Card className="bg-gradient-to-br from-yellow-900/20 to-orange-900/20 border-yellow-500/30 w-fit">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-yellow-300 flex items-center gap-2 text-sm">
+                <Trophy className="h-4 w-4" />
+                奖励规则
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="space-y-1 text-xs text-gray-300">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-3 w-3 text-green-400 flex-shrink-0" />
+                  <span>每条被采纳的反馈奖励1个月会员</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-3 w-3 text-green-400 flex-shrink-0" />
+                  <span>任何建议都欢迎：功能、设计、Bug等</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         <Tabs defaultValue="submit" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-8 bg-slate-800 border-gray-700">
+          <TabsList className="grid w-full grid-cols-2 mb-6 bg-slate-800 border-gray-700">
             <TabsTrigger value="submit" className="text-gray-300 data-[state=active]:text-white">
               提交反馈
             </TabsTrigger>
@@ -162,9 +192,9 @@ const FeedbackPage = () => {
           </TabsList>
 
           <TabsContent value="submit">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
               {/* 提交表单 */}
-              <div className="lg:col-span-2">
+              <div className="lg:col-span-3">
                 <Card className="bg-slate-800/50 border-gray-700">
                   <CardHeader>
                     <CardTitle className="text-white flex items-center gap-2">
@@ -172,33 +202,31 @@ const FeedbackPage = () => {
                       提交你的反馈
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-6">
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                  <CardContent className="space-y-4">
+                    <form onSubmit={handleSubmit} className="space-y-4">
                       {/* 分类选择 */}
                       <div>
-                        <label className="text-sm font-medium text-gray-300 mb-3 block">
+                        <label className="text-sm font-medium text-gray-300 mb-2 block">
                           反馈类型
                         </label>
-                        <div className="grid grid-cols-2 gap-3">
-                          {categories.map((cat) => {
-                            const IconComponent = cat.icon;
-                            return (
-                              <button
-                                key={cat.value}
-                                type="button"
-                                onClick={() => setCategory(cat.value)}
-                                className={`p-4 rounded-lg border transition-all text-left ${
-                                  category === cat.value
-                                    ? 'border-purple-500/50 bg-purple-500/10'
-                                    : 'border-gray-700 bg-slate-700/30 hover:border-gray-600'
-                                }`}
-                              >
-                                <IconComponent className={`h-5 w-5 ${cat.color} mb-2`} />
-                                <div className="text-white font-medium">{cat.label}</div>
-                              </button>
-                            );
-                          })}
-                        </div>
+                        <Select value={category} onValueChange={setCategory}>
+                          <SelectTrigger className="bg-slate-700/50 border-gray-600 text-white">
+                            <SelectValue placeholder="选择反馈类型" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-slate-800 border-gray-700">
+                            {categories.map((cat) => {
+                              const IconComponent = cat.icon;
+                              return (
+                                <SelectItem key={cat.value} value={cat.value} className="text-white hover:bg-slate-700">
+                                  <div className="flex items-center gap-2">
+                                    <IconComponent className={`h-4 w-4 ${cat.color}`} />
+                                    {cat.label}
+                                  </div>
+                                </SelectItem>
+                              );
+                            })}
+                          </SelectContent>
+                        </Select>
                       </div>
 
                       {/* 反馈内容 */}
@@ -210,7 +238,7 @@ const FeedbackPage = () => {
                           placeholder="请详细描述你的建议或发现的问题..."
                           value={feedback}
                           onChange={(e) => setFeedback(e.target.value)}
-                          className="min-h-[120px] bg-slate-700/50 border-gray-600 text-white placeholder:text-gray-400"
+                          className="min-h-[100px] bg-slate-700/50 border-gray-600 text-white placeholder:text-gray-400"
                           required
                         />
                       </div>
@@ -241,40 +269,13 @@ const FeedbackPage = () => {
                 </Card>
               </div>
 
-              {/* 奖励说明 */}
-              <div className="space-y-6">
-                <Card className="bg-gradient-to-br from-yellow-900/20 to-orange-900/20 border-yellow-500/30">
-                  <CardHeader>
-                    <CardTitle className="text-yellow-300 flex items-center gap-2">
-                      <Trophy className="h-5 w-5" />
-                      奖励规则
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3 text-sm text-gray-300">
-                    <div className="flex items-start gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-400 mt-0.5 flex-shrink-0" />
-                      <span>每条被采纳的反馈奖励1个月会员</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-400 mt-0.5 flex-shrink-0" />
-                      <span>先提交先得，重复建议不予奖励</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-400 mt-0.5 flex-shrink-0" />
-                      <span>7天内会给出反馈结果</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-400 mt-0.5 flex-shrink-0" />
-                      <span>任何建议都欢迎：功能、设计、Bug等</span>
-                    </div>
-                  </CardContent>
-                </Card>
-
+              {/* 热门建议 */}
+              <div className="lg:col-span-1">
                 <Card className="bg-slate-800/50 border-gray-700">
                   <CardHeader>
-                    <CardTitle className="text-white text-lg">热门建议</CardTitle>
+                    <CardTitle className="text-white text-base">热门建议</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
+                  <CardContent className="space-y-2">
                     {["深色主题切换", "移动端优化", "数据导出功能", "智能推荐"].map((suggestion, index) => (
                       <div key={index} className="flex items-center justify-between text-sm">
                         <span className="text-gray-300">{suggestion}</span>
@@ -290,19 +291,19 @@ const FeedbackPage = () => {
           </TabsContent>
 
           <TabsContent value="history">
-            <div className="space-y-4">
+            <div className="space-y-3">
               {feedbackData.map((item) => (
                 <Card key={item.id} className="bg-slate-800/50 border-gray-700">
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between mb-4">
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
-                          <span className="text-white text-sm font-semibold">
+                        <div className="w-6 h-6 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
+                          <span className="text-white text-xs font-semibold">
                             {item.author.charAt(0)}
                           </span>
                         </div>
                         <div>
-                          <div className="text-white font-medium">{item.author}</div>
+                          <div className="text-white font-medium text-sm">{item.author}</div>
                           <div className="text-xs text-gray-400">{item.date}</div>
                         </div>
                       </div>
@@ -314,7 +315,7 @@ const FeedbackPage = () => {
                       </div>
                     </div>
                     
-                    <p className="text-gray-300 mb-4 leading-relaxed">{item.content}</p>
+                    <p className="text-gray-300 mb-3 text-sm leading-relaxed">{item.content}</p>
                     
                     <div className="flex items-center justify-between text-xs text-gray-400">
                       <div className="flex items-center gap-4">
