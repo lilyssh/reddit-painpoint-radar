@@ -74,7 +74,7 @@ const HeroSection = () => {
           <Button 
             size="lg" 
             onClick={handleExploreClick}
-            className="group relative bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 hover:from-purple-500 hover:via-pink-500 hover:to-blue-500 text-white font-bold px-12 py-6 h-auto text-xl border-0 shadow-2xl hover:shadow-purple-500/40 transition-all duration-500 hover:scale-110 animate-glow overflow-hidden"
+            className="group relative bg-gradient-to-r from-purple-600 via-blue-600 to-aqua-600 hover:from-aqua-500 hover:via-blue-500 hover:to-purple-500 text-white font-bold px-12 py-6 h-auto text-xl border-0 shadow-2xl hover:shadow-purple-500/40 transition-all duration-500 hover:scale-110 animate-glow overflow-hidden"
           >
             {/* 按钮内部光效 */}
             <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />

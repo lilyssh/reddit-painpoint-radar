@@ -34,20 +34,21 @@ const PainPointsPage = () => {
               </h1>
             </div>
             <div className="flex items-center gap-4 w-auto">
-              {/* 流光边框搜索框 */}
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 rounded-lg p-[2px] animate-pulse">
-                  <div className="bg-slate-700 rounded-md h-full w-full flex items-center">
+              {/* 搜索框 */}
+              <div className="relative w-80">
+                <div className="bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 rounded-lg p-[2px] animate-pulse">
+                  <div className="bg-slate-700 rounded-md h-full w-full flex items-center relative">
                     <Search className="absolute left-3 text-gray-400 h-4 w-4 z-10" />
                     <Input
                       placeholder="搜索痛点、标签、社区..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10 w-80 bg-transparent border-0 text-white placeholder-gray-400 focus:ring-0 focus:outline-none"
+                      className="pl-10 w-full bg-transparent border-0 text-white placeholder-gray-400 focus:ring-0 focus:outline-none"
                     />
                   </div>
                 </div>
               </div>
+              {/* 排序下拉框 */}
               <SortingFilters sortBy={sortBy} setSortBy={setSortBy} />
             </div>
           </div>
