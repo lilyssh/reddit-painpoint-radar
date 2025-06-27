@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -58,8 +57,8 @@ const PainPointsPage = () => {
       {/* Main Content - Full Width Layout */}
       <div className="max-w-full mx-auto px-4 py-8">
         <div className="flex gap-6">
-          {/* Left Sidebar - Reddit Communities - Moved to left edge */}
-          <div className="w-80 flex-shrink-0">
+          {/* Left Sidebar - Reddit Communities - Narrower width */}
+          <div className="w-64 flex-shrink-0">
             <CommunityList 
               selectedCommunity={selectedCommunity}
               onSelectCommunity={setSelectedCommunity}

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -119,18 +118,6 @@ const FeedbackPage = () => {
     <div className="min-h-screen bg-slate-900">
       <Header />
       
-      {/* Reward Rules - Top Left Corner */}
-      <div className="fixed top-20 left-6 z-50 bg-slate-800/90 backdrop-blur-sm rounded-lg p-3 border border-yellow-500/20">
-        <div className="text-xs text-yellow-300 font-medium mb-1">奖励规则</div>
-        <div className="text-xs text-gray-300 space-y-1">
-          <div>✓ 被采纳获得1个月会员</div>
-          <div>✓ 先提交先得</div>
-          <div>✓ 重复不奖励</div>
-          <div>✓ 7天内反馈</div>
-          <div>✓ 多提多得，上不封顶</div>
-        </div>
-      </div>
-      
       {/* Page Header - Compact */}
       <div className="border-b border-gray-700 bg-slate-800/50 backdrop-blur-sm mt-16">
         <div className="max-w-6xl mx-auto px-6 py-4">
@@ -141,7 +128,7 @@ const FeedbackPage = () => {
               </h1>
               <div className="text-sm text-blue-300">
                 每条被采纳的反馈都能获得 
-                <span className="text-lg font-bold bg-gradient-to-r from-green-400 via-blue-500 to-green-500 bg-clip-text text-transparent px-1">
+                <span className="text-2xl font-bold bg-gradient-to-r from-green-400 via-blue-500 to-green-500 bg-clip-text text-transparent px-1 animate-pulse">
                   1个月免费会员奖励
                 </span>
               </div>
@@ -221,17 +208,22 @@ const FeedbackPage = () => {
                       {/* 详细描述 - Rich Text Area */}
                       <div>
                         <label className="text-sm font-medium text-gray-300 mb-2 block">
-                          详细描述 *
+                          详细描述 <span className="text-red-400">*</span>
                         </label>
-                        <Textarea
-                          placeholder="请详细描述你的建议或发现的问题...&#10;&#10;支持：&#10;• 文字格式化&#10;• 链接添加&#10;• 代码片段&#10;• 图片描述"
-                          value={feedback}
-                          onChange={(e) => setFeedback(e.target.value)}
-                          className="min-h-[140px] bg-slate-700/50 border-gray-600 text-white placeholder:text-gray-400 resize-none"
-                          required
-                        />
+                        <div className="relative">
+                          <Textarea
+                            placeholder="请详细描述你的建议或发现的问题...&#10;&#10;支持：&#10;• **粗体文字**&#10;• *斜体文字*&#10;• [链接](https://example.com)&#10;• `代码片段`&#10;• 图片描述"
+                            value={feedback}
+                            onChange={(e) => setFeedback(e.target.value)}
+                            className="min-h-[140px] bg-slate-700/50 border-gray-600 text-white placeholder:text-gray-400 resize-none font-mono"
+                            required
+                          />
+                          <div className="absolute top-2 right-2 text-xs text-gray-500 bg-slate-800/80 px-2 py-1 rounded">
+                            富文本
+                          </div>
+                        </div>
                         <div className="text-xs text-gray-500 mt-1">
-                          支持富文本格式 • 最多500字
+                          支持Markdown格式 • 最多500字
                         </div>
                       </div>
 
@@ -250,7 +242,7 @@ const FeedbackPage = () => {
           </TabsContent>
 
           <TabsContent value="history">
-            <div className="mb-4 flex justify-between items-center">
+            <div className="mb-4 flex justify-center items-center">
               <div className="relative w-80">
                 <div className="bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 rounded-lg p-[2px] animate-pulse">
                   <div className="bg-slate-700 rounded-md h-full w-full flex items-center relative">
@@ -268,7 +260,7 @@ const FeedbackPage = () => {
                   </div>
                 </div>
               </div>
-              <div className="text-sm text-blue-300 animate-pulse">
+              <div className="text-sm text-blue-300 ml-6">
                 💡 点赞数越多，获得额外惊喜的机会越大！
               </div>
             </div>

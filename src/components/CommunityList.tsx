@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -43,10 +42,10 @@ const CommunityList = ({ selectedCommunity, onSelectCommunity, searchTerm }: Com
   const communities = [
     { name: "全部社区", count: 127, trending: false },
     { name: "SaaS", count: 45, trending: true },
-    { name: "Startups 初创公司", count: 32, trending: true },
-    { name: "Technology 科技", count: 28, trending: false },
+    { name: "Startups", count: 32, trending: true },
+    { name: "Technology", count: 28, trending: false },
     { name: "ChatGPT", count: 15, trending: true },
-    { name: "Entrepreneur 创业", count: 12, trending: false },
+    { name: "Entrepreneur", count: 12, trending: false },
     { name: "ProductHunt", count: 8, trending: false },
     { name: "MachineLearning", count: 6, trending: false },
     { name: "WebDev", count: 5, trending: false },
@@ -68,7 +67,7 @@ const CommunityList = ({ selectedCommunity, onSelectCommunity, searchTerm }: Com
   };
 
   return (
-    <Card className="bg-slate-800/30 border-gray-700 p-6 sticky top-32 max-h-[calc(100vh-8rem)] overflow-y-auto glass-card">
+    <Card className="bg-slate-800/30 border-gray-700 p-6 sticky top-32 max-h-[calc(100vh-8rem)] overflow-y-auto glass-card w-64">
       <h3 className="text-lg font-semibold text-white mb-4">Reddit社区</h3>
       
       {/* Community Search */}
