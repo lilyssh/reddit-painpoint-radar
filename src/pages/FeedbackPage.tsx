@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -133,11 +132,10 @@ const FeedbackPage = () => {
 
   // 提交规则标签数据
   const submissionRules = [
-    { text: "先提交先得", color: "bg-blue-500/20 text-blue-300 border-blue-500/50" },
-    { text: "重复不奖励", color: "bg-red-500/20 text-red-300 border-red-500/50" },
-    { text: "7天内反馈", color: "bg-orange-500/20 text-orange-300 border-orange-500/50" },
-    { text: "多提多得", color: "bg-green-500/20 text-green-300 border-green-500/50" },
-    { text: "上不封顶", color: "bg-purple-500/20 text-purple-300 border-purple-500/50" }
+    { text: "先提先得", color: "bg-blue-500/20 text-blue-300 border-blue-500/50" },
+    { text: "重复不奖", color: "bg-blue-500/20 text-blue-300 border-blue-500/50" },
+    { text: "多提多得", color: "bg-blue-500/20 text-blue-300 border-blue-500/50" },
+    { text: "上不封顶", color: "bg-blue-500/20 text-blue-300 border-blue-500/50" }
   ];
 
   return (
@@ -149,7 +147,7 @@ const FeedbackPage = () => {
         <div className="max-w-6xl mx-auto px-6 py-8">
           <div className="flex items-center justify-between">
             {/* 左侧 - 奖励信息 */}
-            <div className="flex flex-col items-start">
+            <div className="flex-1 flex flex-col items-start -ml-16">
               <div className="text-lg text-blue-300 mb-2 letter-spacing-wide">
                 每条被采纳的反馈都能获得
               </div>
@@ -157,25 +155,26 @@ const FeedbackPage = () => {
                 1个月免费会员奖励
               </div>
             </div>
-            
-            {/* 中间 - 主标题 */}
-            <div className="text-center">
-              <h1 className="text-4xl font-bold text-white">
+            {/* 中间 - 主标题，始终居中 */}
+            <div className="w-1/3 flex justify-center">
+              <h1 className="text-5xl font-bold text-white text-center">
                 产品反馈 & 建议
               </h1>
             </div>
-            
-            {/* 右侧 - 规则说明 */}
-            <div className="flex flex-col gap-2">
-              {submissionRules.map((rule, index) => (
-                <Badge
-                  key={index}
-                  variant="outline"
-                  className={`${rule.color} text-sm px-3 py-1 transition-all hover:scale-105`}
-                >
-                  {rule.text}
-                </Badge>
-              ))}
+            {/* 右侧 - 规则说明，显示为2列2行，内容居中 */}
+            <div className="w-1/3 flex justify-end">
+              <div className="grid grid-cols-2 grid-rows-2 gap-4 min-w-[220px]">
+                {submissionRules.map((rule, index) => (
+                  <Badge
+                    key={index}
+                    variant="outline"
+                    className={`${rule.color} text-sm px-3 py-1 transition-all hover:scale-105 flex justify-center items-center`}
+                    style={{ minWidth: '90px', textAlign: 'center' }}
+                  >
+                    {rule.text}
+                  </Badge>
+                ))}
+              </div>
             </div>
           </div>
         </div>
