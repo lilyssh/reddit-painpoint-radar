@@ -68,7 +68,7 @@ const CommunityList = ({ selectedCommunity, onSelectCommunity, searchTerm }: Com
   };
 
   return (
-    <Card className="bg-slate-800/30 border-gray-700 p-6 sticky top-32 max-h-[calc(100vh-8rem)] overflow-y-auto glass-card w-64">
+    <Card className="bg-slate-800/30 border-gray-700 p-6 sticky top-32 max-h-[calc(100vh-8rem)] overflow-y-auto glass-card">
       <h3 className="text-lg font-semibold text-white mb-4">Reddit社区</h3>
       
       {/* Community Search */}
