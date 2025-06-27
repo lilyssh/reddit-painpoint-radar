@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -356,7 +357,7 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                                 <TooltipTrigger asChild>
                                   <Badge 
                                     variant="outline" 
-                                    className="text-xs border-gray-600 text-gray-400 bg-slate-700/50 hover:border-purple-500/50 hover:text-purple-300 cursor-pointer transition-all"
+                                    className="text-xs border-cyan-500/50 text-cyan-300 bg-cyan-500/10 hover:border-cyan-400/70 hover:text-cyan-200 cursor-pointer transition-all"
                                   >
                                     {tag}
                                   </Badge>
@@ -367,7 +368,7 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                               </Tooltip>
                             ))}
                             {point.tags.length > 2 && (
-                              <Badge variant="outline" className="text-xs border-gray-600 text-gray-400 bg-slate-700/50">
+                              <Badge variant="outline" className="text-xs border-cyan-500/50 text-cyan-300 bg-cyan-500/10">
                                 +{point.tags.length - 2}
                               </Badge>
                             )}

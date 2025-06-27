@@ -1,14 +1,16 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Trophy, Star, Clock, CheckCircle, AlertCircle, Lightbulb, Bug, Palette, Settings, ThumbsUp } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Header from "@/components/Header";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const FeedbackPage = () => {
   const [feedback, setFeedback] = useState("");
@@ -114,6 +116,21 @@ const FeedbackPage = () => {
     }, 1500);
   };
 
+  const quillModules = {
+    toolbar: [
+      [{ 'header': [1, 2, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      ['link', 'image'],
+      ['clean']
+    ],
+  };
+
+  const quillFormats = [
+    'header', 'bold', 'italic', 'underline', 'strike',
+    'list', 'bullet', 'link', 'image'
+  ];
+
   return (
     <div className="min-h-screen bg-slate-900">
       <Header />
@@ -121,17 +138,17 @@ const FeedbackPage = () => {
       {/* Page Header - Compact */}
       <div className="border-b border-gray-700 bg-slate-800/50 backdrop-blur-sm mt-16">
         <div className="max-w-6xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
-              <h1 className="text-2xl font-bold text-white">
-                产品反馈 & 建议
-              </h1>
-              <div className="text-sm text-blue-300">
-                每条被采纳的反馈都能获得 
-                <span className="text-2xl font-bold bg-gradient-to-r from-green-400 via-blue-500 to-green-500 bg-clip-text text-transparent px-1 animate-pulse">
-                  1个月免费会员奖励
-                </span>
-              </div>
+          <div className="flex items-center justify-center gap-6">
+            <h1 className="text-2xl font-bold text-white">
+              产品反馈 & 建议
+            </h1>
+            <div className="text-sm text-blue-300 text-center">
+              每条被采纳的反馈都能获得 
+              <span className="text-2xl font-bold bg-gradient-to-r from-green-400 via-blue-500 to-green-500 bg-clip-text text-transparent px-1 animate-pulse">
+                1个月免费会员奖励
+              </span>
+              <br />
+              <span className="text-xs text-gray-400">先提交先得、重复不奖励、7天内反馈、多提多得，上不封顶</span>
             </div>
           </div>
         </div>
@@ -205,35 +222,41 @@ const FeedbackPage = () => {
 
                     {/* Right Column - Description and Submit */}
                     <div className="space-y-4">
-                      {/* 详细描述 - Rich Text Area */}
+                      {/* 详细描述 - Quill Rich Text Editor */}
                       <div>
                         <label className="text-sm font-medium text-gray-300 mb-2 block">
                           详细描述 <span className="text-red-400">*</span>
                         </label>
                         <div className="relative">
-                          <Textarea
-                            placeholder="请详细描述你的建议或发现的问题...&#10;&#10;支持：&#10;• **粗体文字**&#10;• *斜体文字*&#10;• [链接](https://example.com)&#10;• `代码片段`&#10;• 图片描述"
+                          <ReactQuill
+                            theme="snow"
                             value={feedback}
-                            onChange={(e) => setFeedback(e.target.value)}
-                            className="min-h-[140px] bg-slate-700/50 border-gray-600 text-white placeholder:text-gray-400 resize-none font-mono"
-                            required
+                            onChange={setFeedback}
+                            modules={quillModules}
+                            formats={quillFormats}
+                            placeholder="请详细描述你的建议或发现的问题..."
+                            className="bg-slate-700/50 text-white"
+                            style={{
+                              backgroundColor: 'rgba(51, 65, 85, 0.5)',
+                              color: 'white',
+                              minHeight: '140px'
+                            }}
                           />
-                          <div className="absolute top-2 right-2 text-xs text-gray-500 bg-slate-800/80 px-2 py-1 rounded">
-                            富文本
-                          </div>
                         </div>
                         <div className="text-xs text-gray-500 mt-1">
-                          支持Markdown格式 • 最多500字
+                          支持富文本格式 • 最多500字
                         </div>
                       </div>
 
-                      <Button
-                        type="submit"
-                        disabled={isSubmitting || !feedback.trim()}
-                        className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0"
-                      >
-                        {isSubmitting ? "提交中..." : "提交反馈"}
-                      </Button>
+                      <div className="mt-6">
+                        <Button
+                          type="submit"
+                          disabled={isSubmitting || !feedback.trim()}
+                          className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0"
+                        >
+                          {isSubmitting ? "提交中..." : "提交反馈"}
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </form>
