@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -6,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { ExternalLink, MessageCircle, TrendingUp, Clock, Users, Star, Bookmark, BarChart3, CheckCircle, Heart, Eye, ThumbsUp } from "lucide-react";
+import { ExternalLink, TrendingUp, Star, Bookmark, CheckCircle, ThumbsUp } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface PainPointsListViewProps {
@@ -166,11 +165,11 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
   });
 
   const getSeverityDisplay = (severity: number) => {
-    if (severity >= 5) return { flames: "🔥🔥🔥🔥🔥", color: "text-red-400", bg: "bg-red-500/10" };
-    if (severity >= 4) return { flames: "🔥🔥🔥🔥", color: "text-orange-400", bg: "bg-orange-500/10" };
-    if (severity >= 3) return { flames: "🔥🔥🔥", color: "text-yellow-400", bg: "bg-yellow-500/10" };
-    if (severity >= 2) return { flames: "🔥🔥", color: "text-blue-400", bg: "bg-blue-500/10" };
-    return { flames: "🔥", color: "text-gray-400", bg: "bg-gray-500/10" };
+    if (severity >= 5) return { flames: "🔥🔥🔥🔥🔥", color: "text-red-400" };
+    if (severity >= 4) return { flames: "🔥🔥🔥🔥", color: "text-orange-400" };
+    if (severity >= 3) return { flames: "🔥🔥🔥", color: "text-yellow-400" };
+    if (severity >= 2) return { flames: "🔥🔥", color: "text-blue-400" };
+    return { flames: "🔥", color: "text-gray-400" };
   };
 
   const getMarketSizeColor = (size: string) => {
@@ -357,7 +356,7 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                                 <TooltipTrigger asChild>
                                   <Badge 
                                     variant="outline" 
-                                    className="text-xs border-cyan-500/50 text-cyan-300 bg-cyan-500/10 hover:border-cyan-400/70 hover:text-cyan-200 cursor-pointer transition-all"
+                                    className="text-xs border-green-500/50 text-green-300 bg-green-500/10 hover:border-green-400/70 hover:text-green-200 cursor-pointer transition-all"
                                   >
                                     {tag}
                                   </Badge>
@@ -368,7 +367,7 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                               </Tooltip>
                             ))}
                             {point.tags.length > 2 && (
-                              <Badge variant="outline" className="text-xs border-cyan-500/50 text-cyan-300 bg-cyan-500/10">
+                              <Badge variant="outline" className="text-xs border-green-500/50 text-green-300 bg-green-500/10">
                                 +{point.tags.length - 2}
                               </Badge>
                             )}
@@ -377,9 +376,9 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                       </div>
                     </div>
 
-                    {/* Severity */}
+                    {/* Severity - 移除背景色 */}
                     <div className="col-span-2">
-                      <div className={`flex items-center gap-2 px-2 py-1 rounded-md ${severity.bg}`}>
+                      <div className="flex items-center gap-2">
                         <span className={`text-sm font-medium ${severity.color}`}>
                           {severity.flames}
                         </span>
@@ -396,7 +395,7 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                       </div>
                     </div>
 
-                    {/* Trend & Votes */}
+                    {/* Trend & Votes - 移除评论图标 */}
                     <div className="col-span-1">
                       <div className="space-y-2">
                         <Tooltip>
@@ -413,11 +412,6 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                         <div className="flex items-center gap-1">
                           <TrendingUp className="h-3 w-3 text-green-400" />
                           <span className="text-xs text-white font-medium">{point.votes}</span>
-                        </div>
-                        
-                        <div className="flex items-center gap-1">
-                          <MessageCircle className="h-3 w-3 text-gray-400" />
-                          <span className="text-xs text-gray-400">{point.comments}</span>
                         </div>
                       </div>
                     </div>
@@ -456,10 +450,10 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                     {/* Social Actions & Rating */}
                     <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-700/20">
                       <div className="flex items-center gap-4">
-                        {/* Star Rating */}
+                        {/* Star Rating - 修改"平均评分"后的显示 */}
                         <div className="flex items-center gap-2">
                           <StarRating rating={point.avgRating} readonly />
-                          <span className="text-xs text-gray-400">平均评分 ({point.ratingCount})</span>
+                          <span className="text-xs text-gray-400">平均评分 ({point.ratingCount}人)</span>
                         </div>
                         
                         {/* User Rating */}
