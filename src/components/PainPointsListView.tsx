@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -6,16 +5,17 @@ import { Card } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { ExternalLink, TrendingUp, Star, Bookmark, CheckCircle, ThumbsUp, MessageCircle } from "lucide-react";
+import { ExternalLink, TrendingUp, Star, Bookmark, CheckCircle, ThumbsUp, MessageCircle, Globe, Building, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface PainPointsListViewProps {
   searchTerm: string;
   selectedCommunity: string;
   sortBy: string;
+  showBookmarkedOnly?: boolean;
 }
 
-const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPointsListViewProps) => {
+const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy, showBookmarkedOnly = false }: PainPointsListViewProps) => {
   const [bookmarkedItems, setBookmarkedItems] = useState<number[]>([]);
   const [likedItems, setLikedItems] = useState<number[]>([]);
   const [loadingItems, setLoadingItems] = useState<number[]>([]);
@@ -154,12 +154,15 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
     }
   ];
 
-  const filteredPainPoints = painPointsData.filter(point => {
+  let filteredPainPoints = painPointsData.filter(point => {
     if (selectedCommunity !== "全部社区" && point.community !== selectedCommunity) {
       return false;
     }
     if (searchTerm && !point.title.toLowerCase().includes(searchTerm.toLowerCase()) && 
         !point.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))) {
+      return false;
+    }
+    if (showBookmarkedOnly && !bookmarkedItems.includes(painPointsData.indexOf(point))) {
       return false;
     }
     return true;
@@ -242,13 +245,41 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
     }));
 
     if (tag === 'done' && !isSelected) {
-      // 模拟显示做过的人的信息
+      // Enhanced user data with more information
       setSelectedTagUsers([
-        { name: "张三", website: "https://example1.com", avatar: "ZS" },
-        { name: "李四", website: "https://example2.com", avatar: "LS" },
-        { name: "王五", website: "https://example3.com", avatar: "WW" }
+        {
+          name: "张三",
+          website: "https://stripe-refund-manager.com",
+          avatar: "ZS",
+          description: "开发了一个自动退款管理工具，专门解决Stripe客户流失后的退款问题",
+          company: "TechFlow Solutions",
+          location: "北京",
+          experience: "3年SaaS开发经验",
+          tags: ["SaaS", "支付系统", "自动化"]
+        },
+        {
+          name: "李四",
+          website: "https://paymentpro.io",
+          avatar: "LS",
+          description: "创建了支付流程优化平台，帮助企业提升退款处理效率",
+          company: "PaymentPro Inc.",
+          location: "上海",
+          experience: "5年金融科技经验",
+          tags: ["金融科技", "支付", "企业服务"]
+        },
+        {
+          name: "王五",
+          website: "https://autoreturn.co",
+          avatar: "WW",
+          description: "开发了智能退款系统，支持多种支付平台的自动化退款处理",
+          company: "AutoReturn Co.",
+          location: "深圳",
+          experience: "4年企业软件开发",
+          tags: ["自动化", "企业软件", "多平台集成"]
+        }
       ]);
       setShowUsersDialog(true);
+      return; // Don't show toast for 'done' tag
     }
 
     toast({
@@ -357,7 +388,7 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                                 <TooltipTrigger asChild>
                                   <Badge 
                                     variant="outline" 
-                                    className="text-xs border-green-500/50 text-green-300 bg-green-500/10 hover:border-green-400/70 hover:text-green-200 cursor-pointer transition-all"
+                                    className="text-xs border-orange-500/50 text-orange-300 bg-orange-500/10 hover:border-orange-400/70 hover:text-orange-200 cursor-pointer transition-all"
                                   >
                                     {tag}
                                   </Badge>
@@ -368,7 +399,7 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                               </Tooltip>
                             ))}
                             {point.tags.length > 2 && (
-                              <Badge variant="outline" className="text-xs border-green-500/50 text-green-300 bg-green-500/10">
+                              <Badge variant="outline" className="text-xs border-orange-500/50 text-orange-300 bg-orange-500/10">
                                 +{point.tags.length - 2}
                               </Badge>
                             )}
@@ -377,7 +408,7 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                       </div>
                     </div>
 
-                    {/* Severity - 移除背景色 */}
+                    {/* Severity */}
                     <div className="col-span-2">
                       <div className="flex items-center gap-2">
                         <span className={`text-sm font-medium ${severity.color}`}>
@@ -396,7 +427,7 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                       </div>
                     </div>
 
-                    {/* Trend & Votes - 移除评论图标 */}
+                    {/* Trend & Votes */}
                     <div className="col-span-1">
                       <div className="space-y-2">
                         <Tooltip>
@@ -451,7 +482,7 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                     {/* Social Actions & Rating */}
                     <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-700/20">
                       <div className="flex items-center gap-4">
-                        {/* Star Rating - 修改"平均评分"后的显示 */}
+                        {/* Star Rating */}
                         <div className="flex items-center gap-2">
                           <StarRating rating={point.avgRating} readonly />
                           <span className="text-xs text-gray-400">平均评分 ({point.ratingCount}人)</span>
@@ -571,12 +602,12 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
                         })}
                       </div>
 
-                      {/* AI Assistant Buttons - Moved to right side */}
+                      {/* AI Assistant Buttons */}
                       <div className="flex gap-2">
                         <Button 
                           variant="outline" 
                           size="sm"
-                          className="text-xs bg-gradient-to-r from-purple-500/10 to-blue-500/10 border-purple-500/30 text-purple-300 hover:border-purple-500/50"
+                          className="text-xs bg-gradient-to-r from-sky-500/10 to-blue-500/10 border-sky-500/40 text-sky-300 hover:border-sky-500/60 hover:bg-sky-500/20"
                         >
                           🚀 一键生成验证方案
                         </Button>
@@ -612,32 +643,69 @@ const PainPointsListView = ({ searchTerm, selectedCommunity, sortBy }: PainPoint
         </div>
       </div>
 
-      {/* Users Dialog */}
+      {/* Enhanced Users Dialog */}
       <Dialog open={showUsersDialog} onOpenChange={setShowUsersDialog}>
-        <DialogContent className="bg-slate-900 border-gray-700">
+        <DialogContent className="bg-slate-900 border-gray-700 max-w-2xl">
           <DialogHeader>
-            <DialogTitle className="text-white">做过的用户</DialogTitle>
+            <DialogTitle className="text-white text-lg font-semibold">做过的用户</DialogTitle>
           </DialogHeader>
-          <div className="space-y-3">
+          <div className="space-y-4 max-h-96 overflow-y-auto">
             {selectedTagUsers.map((user, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-slate-800 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <Avatar>
-                    <AvatarFallback className="bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-semibold">
-                      {user.avatar}
-                    </AvatarFallback>
-                  </Avatar>
-                  <span className="text-white">{user.name}</span>
+              <div key={index} className="flex items-start gap-4 p-4 bg-slate-800/50 rounded-lg border border-gray-700/50 hover:bg-slate-800/70 transition-colors">
+                <Avatar className="h-12 w-12 flex-shrink-0">
+                  <AvatarFallback className="bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold">
+                    {user.avatar}
+                  </AvatarFallback>
+                </Avatar>
+                
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <h4 className="text-white font-medium text-sm">{user.name}</h4>
+                      <div className="flex items-center gap-2 text-xs text-gray-400 mt-1">
+                        <Building className="h-3 w-3" />
+                        <span>{user.company}</span>
+                        <span>•</span>
+                        <span>{user.location}</span>
+                      </div>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => window.open(user.website, '_blank')}
+                      className="text-purple-300 border-purple-500/50 hover:bg-purple-500/10 flex-shrink-0"
+                    >
+                      <ExternalLink className="h-3 w-3 mr-1" />
+                      访问
+                    </Button>
+                  </div>
+                  
+                  <p className="text-gray-300 text-sm mb-3 leading-relaxed">{user.description}</p>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1 text-xs text-gray-400">
+                      <Users className="h-3 w-3" />
+                      <span>{user.experience}</span>
+                    </div>
+                    
+                    <div className="flex flex-wrap gap-1">
+                      {user.tags.map((tag: string, tagIndex: number) => (
+                        <Badge 
+                          key={tagIndex}
+                          variant="outline" 
+                          className="text-xs border-green-500/50 text-green-300 bg-green-500/10"
+                        >
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-1 mt-2 text-xs text-gray-500">
+                    <Globe className="h-3 w-3" />
+                    <span className="truncate">{user.website}</span>
+                  </div>
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => window.open(user.website, '_blank')}
-                  className="text-purple-300 border-purple-500/50 hover:bg-purple-500/10"
-                >
-                  <ExternalLink className="h-4 w-4 mr-1" />
-                  访问
-                </Button>
               </div>
             ))}
           </div>

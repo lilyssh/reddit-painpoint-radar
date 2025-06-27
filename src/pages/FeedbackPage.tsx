@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -130,32 +131,51 @@ const FeedbackPage = () => {
     'list', 'bullet', 'link', 'image'
   ];
 
+  // 提交规则标签数据
+  const submissionRules = [
+    { text: "先提交先得", color: "bg-blue-500/20 text-blue-300 border-blue-500/50" },
+    { text: "重复不奖励", color: "bg-red-500/20 text-red-300 border-red-500/50" },
+    { text: "7天内反馈", color: "bg-orange-500/20 text-orange-300 border-orange-500/50" },
+    { text: "多提多得", color: "bg-green-500/20 text-green-300 border-green-500/50" },
+    { text: "上不封顶", color: "bg-purple-500/20 text-purple-300 border-purple-500/50" }
+  ];
+
   return (
     <div className="min-h-screen bg-slate-900">
       <Header />
       
-      {/* Page Header - 重新布局 */}
+      {/* Page Header - 改进布局 */}
       <div className="border-b border-gray-700 bg-slate-800/50 backdrop-blur-sm mt-16">
-        <div className="max-w-6xl mx-auto px-6 py-6">
+        <div className="max-w-6xl mx-auto px-6 py-8">
           <div className="flex items-center justify-between">
-            {/* 左侧 - 会员奖励信息 */}
-            <div className="text-sm text-blue-300">
-              每条被采纳的反馈都能获得 
-              <div className="text-3xl font-bold bg-gradient-to-r from-green-400 via-blue-500 to-green-500 bg-clip-text text-transparent animate-pulse">
+            {/* 左侧 - 奖励信息 */}
+            <div className="flex flex-col items-start">
+              <div className="text-lg text-blue-300 mb-2 letter-spacing-wide">
+                每条被采纳的反馈都能获得
+              </div>
+              <div className="text-4xl font-bold bg-gradient-to-r from-green-400 via-blue-500 to-green-500 bg-clip-text text-transparent animate-pulse">
                 1个月免费会员奖励
               </div>
             </div>
             
             {/* 中间 - 主标题 */}
             <div className="text-center">
-              <h1 className="text-3xl font-bold text-white">
+              <h1 className="text-4xl font-bold text-white">
                 产品反馈 & 建议
               </h1>
             </div>
             
             {/* 右侧 - 规则说明 */}
-            <div className="text-sm text-gray-400 text-right">
-              先提交先得、重复不奖励、7天内反馈、多提多得，上不封顶
+            <div className="flex flex-col gap-2">
+              {submissionRules.map((rule, index) => (
+                <Badge
+                  key={index}
+                  variant="outline"
+                  className={`${rule.color} text-sm px-3 py-1 transition-all hover:scale-105`}
+                >
+                  {rule.text}
+                </Badge>
+              ))}
             </div>
           </div>
         </div>
@@ -228,7 +248,7 @@ const FeedbackPage = () => {
                     </div>
 
                     {/* Right Column - Description and Submit */}
-                    <div className="space-y-6">
+                    <div className="space-y-8">
                       {/* 详细描述 - Quill Rich Text Editor */}
                       <div>
                         <label className="text-sm font-medium text-gray-300 mb-2 block">
@@ -273,20 +293,18 @@ const FeedbackPage = () => {
 
           <TabsContent value="history">
             <div className="mb-4 flex justify-between items-center">
-              {/* 居中的搜索框 */}
-              <div className="flex-1 flex justify-center">
-                <div className="relative w-80">
-                  <div className="bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 rounded-lg p-[2px] animate-pulse">
-                    <div className="bg-slate-700 rounded-md h-full w-full flex items-center relative">
-                      <Search className="absolute left-3 text-gray-400 h-4 w-4 z-10" />
-                      <input
-                        type="text"
-                        placeholder="搜索反馈内容、作者、类别..."
-                        value={historySearch}
-                        onChange={e => setHistorySearch(e.target.value)}
-                        className="pl-10 w-full bg-transparent border-0 text-white placeholder-gray-400 focus:ring-0 focus:outline-none py-2"
-                      />
-                    </div>
+              {/* 左侧对齐的搜索框 */}
+              <div className="relative w-80">
+                <div className="bg-gradient-to-r from-purple-600 via-blue-600 to-purple-600 rounded-lg p-[2px] animate-pulse">
+                  <div className="bg-slate-700 rounded-md h-full w-full flex items-center relative">
+                    <Search className="absolute left-3 text-gray-400 h-4 w-4 z-10" />
+                    <input
+                      type="text"
+                      placeholder="搜索反馈内容、作者、类别..."
+                      value={historySearch}
+                      onChange={e => setHistorySearch(e.target.value)}
+                      className="pl-10 w-full bg-transparent border-0 text-white placeholder-gray-400 focus:ring-0 focus:outline-none py-2"
+                    />
                   </div>
                 </div>
               </div>
@@ -359,3 +377,4 @@ const FeedbackPage = () => {
 };
 
 export default FeedbackPage;
+

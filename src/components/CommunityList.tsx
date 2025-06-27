@@ -1,9 +1,10 @@
+
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Clock, Users, TrendingUp, MoreHorizontal, Globe, Zap, Cpu, MessageSquare, Briefcase, ShoppingCart, Code, Palette, Music, Gamepad2 } from "lucide-react";
+import { Search, Clock, TrendingUp, MoreHorizontal, Globe, Zap, Cpu, MessageSquare, Briefcase, ShoppingCart, Code, Palette, Music, Gamepad2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 interface CommunityListProps {
@@ -108,7 +109,6 @@ const CommunityList = ({ selectedCommunity, onSelectCommunity, searchTerm }: Com
                       <IconComponent className="h-4 w-4 flex-shrink-0" />
                       <span className="truncate">{community}</span>
                     </div>
-                    <Users className="h-3 w-3 text-gray-500 flex-shrink-0 ml-2" />
                   </div>
                 </Button>
               );
@@ -172,3 +172,4 @@ const CommunityList = ({ selectedCommunity, onSelectCommunity, searchTerm }: Com
 };
 
 export default CommunityList;
+
