@@ -26,7 +26,7 @@ const PainPointsPage = () => {
       
       {/* Page Header */}
       <div className="border-b border-gray-700 bg-slate-800/50 backdrop-blur-sm sticky top-16 z-40 mt-16">
-        <div className="max-w-7xl mx-auto px-6 py-6">
+        <div className="max-w-full mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-white mb-2">
@@ -55,11 +55,11 @@ const PainPointsPage = () => {
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="grid grid-cols-12 gap-8">
-          {/* Left Sidebar - Reddit Communities */}
-          <div className="col-span-3">
+      {/* Main Content - Full Width Layout */}
+      <div className="max-w-full mx-auto px-4 py-8">
+        <div className="flex gap-6">
+          {/* Left Sidebar - Reddit Communities - Moved to left edge */}
+          <div className="w-80 flex-shrink-0">
             <CommunityList 
               selectedCommunity={selectedCommunity}
               onSelectCommunity={setSelectedCommunity}
@@ -67,8 +67,8 @@ const PainPointsPage = () => {
             />
           </div>
 
-          {/* Right Content - Pain Points */}
-          <div className="col-span-9">
+          {/* Right Content - Pain Points - Extended to right edge */}
+          <div className="flex-1 min-w-0">
             <div className="mb-6 flex items-center justify-between">
               <div>
                 <h2 className="text-xl font-semibold text-white mb-2">
