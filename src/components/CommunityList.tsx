@@ -16,7 +16,7 @@ interface CommunityListProps {
 const CommunityList = ({ selectedCommunity, onSelectCommunity, searchTerm }: CommunityListProps) => {
   const [communitySearch, setCommunitySearch] = useState("");
   const [recentlyVisited, setRecentlyVisited] = useState([
-    "SaaS", "Startups 初创公司", "Technology 科技"
+    "SaaS", "Startups", "Technology"
   ]);
 
   // 获取社区图标
@@ -24,10 +24,10 @@ const CommunityList = ({ selectedCommunity, onSelectCommunity, searchTerm }: Com
     const iconMap: { [key: string]: any } = {
       "全部社区": Globe,
       "SaaS": Zap,
-      "Startups 初创公司": Briefcase,
-      "Technology 科技": Cpu,
+      "Startups": Briefcase,
+      "Technology": Cpu,
       "ChatGPT": MessageSquare,
-      "Entrepreneur 创业": Briefcase,
+      "Entrepreneur": Briefcase,
       "ProductHunt": TrendingUp,
       "MachineLearning": Cpu,
       "WebDev": Code,
